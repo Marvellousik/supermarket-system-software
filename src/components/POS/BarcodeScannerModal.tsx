@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Camera, Zap, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Camera, Zap, AlertCircle, CheckCircle2, X } from "lucide-react";
 import { Product } from "@/types/Entities";
 import { formatNaira, playScannerBeep } from "@/utils/formatters";
 
@@ -101,37 +101,30 @@ export default function BarcodeScannerModal({
         });
 
         const interval = setInterval(async () => {
-          if (!videoRef.current || videoRef.current.readyState < 2) return;
+          if (!videoRef.current || !streamRef.current) {
+            clearInterval(interval);
+            return;
+          }
           try {
-            const barcodes = await barcodeDetector.detect(videoRef.current);
-            if (barcodes.length > 0) {
-              const rawValue = barcodes[0].rawValue;
-              triggerScan(rawValue);
+            const detected = await barcodeDetector.detect(videoRef.current);
+            if (detected.length > 0 && detected[0].rawValue) {
+              triggerScan(detected[0].rawValue);
               clearInterval(interval);
             }
-          } catch {
-            // Ignored
-          }
-        }, 300);
-
-        return () => clearInterval(interval);
+          } catch {}
+        }, 500);
       }
     } catch {
-      setCameraError(
-        "Camera feed unavailable or access declined. Enter code manually or select test code below."
-      );
+      setCameraError("Camera permission denied or camera device in use.");
       setCameraActive(false);
     }
   }, [triggerScan]);
 
   useEffect(() => {
-    if (!isOpen) {
-      stopCamera();
-      setManualCode("");
-      setScanStatus(null);
-      setLastScannedProduct(null);
-    } else {
+    if (isOpen) {
       startCamera();
+    } else {
+      stopCamera();
     }
     return () => {
       stopCamera();
@@ -148,24 +141,24 @@ export default function BarcodeScannerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 font-sans text-slate-800">
-      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 font-sans text-black">
+      <div className="bg-white border border-[#e4e4e7] rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50 font-mono text-xs shrink-0">
-          <span className="font-bold text-slate-800 uppercase tracking-wider">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e4e4e7] bg-[#fbfbf5] shrink-0">
+          <span className="font-semibold text-sm text-black tracking-tight">
             Barcode Optical Reader
           </span>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 font-mono text-xs cursor-pointer shrink-0"
+            className="p-1 rounded-full text-[#71717a] hover:text-black cursor-pointer shrink-0"
           >
-            [X]
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Viewfinder & Controls Body */}
-        <div className="p-5 flex-1 min-h-0 overflow-y-auto space-y-4">
-          <div className="relative aspect-video w-full bg-slate-950 rounded-lg overflow-hidden border border-slate-200 flex items-center justify-center font-mono">
+        <div className="p-6 flex-1 min-h-0 overflow-y-auto space-y-4">
+          <div className="relative aspect-video w-full bg-black rounded-xl overflow-hidden border border-[#1e2c31] flex items-center justify-center font-mono">
             {cameraActive ? (
               <video
                 ref={videoRef}
@@ -175,22 +168,22 @@ export default function BarcodeScannerModal({
                 muted
               />
             ) : (
-              <div className="text-center p-6 space-y-1 text-xs">
-                <Camera className="w-8 h-8 text-slate-500 mx-auto mb-2" />
-                <p className="font-medium text-slate-300">
+              <div className="text-center p-6 space-y-1.5 text-xs">
+                <Camera className="w-8 h-8 text-[#71717a] mx-auto mb-2" />
+                <p className="font-medium text-white">
                   {cameraError || "Optical scanner ready"}
                 </p>
-                <p className="text-[11px] text-slate-400 max-w-md mx-auto">
-                  Physical barcode gun inputs directly into active register. Click any test barcode below to simulate instant hardware scan.
+                <p className="text-[11px] text-[#a1a1aa] max-w-md mx-auto">
+                  Physical barcode guns input directly into active register. Click any test barcode below to simulate instant hardware scan.
                 </p>
               </div>
             )}
 
             {/* Reticle */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-              <div className="w-56 h-28 border border-white/70 rounded relative">
-                <div className="absolute left-0 right-0 h-[1.5px] bg-red-500 top-1/2 -translate-y-1/2 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-white bg-slate-900 px-2 py-0.5 rounded font-mono">
+              <div className="w-56 h-28 border border-white/60 rounded-lg relative">
+                <div className="absolute left-0 right-0 h-[1.5px] bg-[#c1fbd4] top-1/2 -translate-y-1/2 shadow-[0_0_8px_rgba(193,251,212,0.8)]" />
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-black bg-[#c1fbd4] px-2 py-0.5 rounded-full font-mono font-bold">
                   TARGET AREA
                 </div>
               </div>
@@ -200,22 +193,22 @@ export default function BarcodeScannerModal({
           {/* Scan Status */}
           {scanStatus && (
             <div
-              className={`p-3 rounded-lg border flex items-center gap-2 text-xs font-mono ${
+              className={`p-3 rounded-xl border flex items-center gap-2.5 text-xs font-mono ${
                 lastScannedProduct
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                  : "bg-red-50 border-red-200 text-red-800"
+                  ? "bg-[#c1fbd4] border-[#c1fbd4] text-black"
+                  : "bg-rose-50 border-rose-200 text-rose-800"
               }`}
             >
               {lastScannedProduct ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-black shrink-0" />
               ) : (
-                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
               )}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold truncate">{scanStatus}</p>
                 {lastScannedProduct && (
-                  <p className="text-[11px] text-slate-600 mt-0.5 truncate">
-                    Price: <span className="font-bold text-slate-900">{formatNaira(lastScannedProduct.price)}</span> | SKU: {lastScannedProduct.code}
+                  <p className="text-[11px] text-[#52525b] mt-0.5 truncate">
+                    Price: <span className="font-bold text-black">{formatNaira(lastScannedProduct.price)}</span> | SKU: {lastScannedProduct.code}
                   </p>
                 )}
               </div>
@@ -229,21 +222,21 @@ export default function BarcodeScannerModal({
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
               placeholder="Enter barcode or SKU (e.g. 89010001023 or HH-1023)"
-              className="flex-1 min-w-0 bg-white border border-slate-300 rounded px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="flex-1 min-w-0 bg-white border border-[#e4e4e7] rounded-md px-3.5 py-2.5 text-black placeholder-[#a1a1aa] focus:outline-none focus:border-black"
               autoFocus
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+              className="btn-primary-pill px-5 py-2.5 text-xs font-semibold shrink-0"
             >
-              <Zap className="w-3.5 h-3.5 shrink-0" />
+              <Zap className="w-3.5 h-3.5 fill-current" />
               <span>Simulate</span>
             </button>
           </form>
 
           {/* Quick Click-to-Scan Sample Products */}
-          <div className="space-y-1.5 font-mono">
-            <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase font-semibold">
+          <div className="space-y-2 font-mono">
+            <div className="flex items-center justify-between text-[11px] text-[#71717a] uppercase font-semibold">
               <span>Test Barcodes (Instant Scan Simulator)</span>
               <span>Click to test scan</span>
             </div>
@@ -253,14 +246,14 @@ export default function BarcodeScannerModal({
                   key={p.id}
                   onClick={() => triggerScan(p.barcode)}
                   type="button"
-                  className="p-2.5 bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 hover:border-emerald-300 rounded-lg text-left transition-colors font-mono cursor-pointer"
+                  className="p-2.5 bg-[#fbfbf5] hover:bg-white border border-[#e4e4e7] hover:border-black rounded-xl text-left transition-colors font-mono cursor-pointer card-stack-shadow"
                 >
-                  <p className="text-[11px] font-sans font-semibold text-slate-800 truncate" title={p.name}>
+                  <p className="text-[11px] font-sans font-semibold text-black truncate" title={p.name}>
                     {p.name}
                   </p>
-                  <div className="flex items-center justify-between mt-1 text-[10px] text-slate-500">
+                  <div className="flex items-center justify-between mt-1 text-[10px] text-[#71717a]">
                     <span className="truncate mr-1">{p.barcode}</span>
-                    <span className="text-emerald-700 font-bold shrink-0">{formatNaira(p.price)}</span>
+                    <span className="text-black font-bold shrink-0">{formatNaira(p.price)}</span>
                   </div>
                 </button>
               ))}
@@ -269,11 +262,11 @@ export default function BarcodeScannerModal({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center text-xs font-mono text-slate-500 shrink-0">
-          <span>Audio beep: <strong className="text-slate-700">{soundEnabled ? "ACTIVE" : "MUTED"}</strong></span>
+        <div className="px-6 py-3.5 border-t border-[#e4e4e7] bg-[#fbfbf5] flex justify-between items-center text-xs font-mono text-[#71717a] shrink-0">
+          <span>Audio beep: <strong className="text-black">{soundEnabled ? "ACTIVE" : "MUTED"}</strong></span>
           <button
             onClick={onClose}
-            className="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded font-sans transition-colors font-medium cursor-pointer shrink-0"
+            className="btn-outline-light px-4 py-1.5 text-xs font-medium cursor-pointer shrink-0"
           >
             Close Scanner
           </button>

@@ -3,19 +3,40 @@
 @theme {
   --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-canvas-cream: #fbfbf5;
+  --color-canvas-night: #000000;
+  --color-canvas-night-elevated: #0a0a0a;
+  --color-surface-elevated-dark: #1e2c31;
+  --color-aloe-10: #c1fbd4;
+  --color-pistachio-10: #d4f9e0;
+  --color-shade-30: #d4d4d8;
+  --color-shade-40: #a1a1aa;
+  --color-shade-50: #71717a;
+  --color-shade-60: #52525b;
+  --color-shade-70: #3f3f46;
+  --color-hairline-light: #e4e4e7;
+  --color-hairline-dark: #1e2c31;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #fbfbf5;
+  color: #000000;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.011em;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-feature-settings: "ss03", "tnum", "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Page Headings (H1: 32-40px/700, H2: 24-28px/700, H3: 18-20px/600) */
+/* DESIGN.md Display Typography (weight 330, thin editorial cut) */
+.display-thin {
+  font-weight: 330;
+  letter-spacing: 0.015em;
+  line-height: 1.05;
+}
+
+/* Page Headings */
 h1, .heading-1 {
   font-size: clamp(2rem, 1.8rem + 1vw, 2.5rem);
   font-weight: 700;
@@ -37,28 +58,156 @@ h3, .heading-3 {
   line-height: 1.35;
 }
 
-/* Athletic / Performance Numbers (Bold geometric telemetry, tabular alignment) */
+/* Telemetry & Metric Numbers */
 .metric-athletic-hero {
-  font-size: clamp(2rem, 1.75rem + 1.25vw, 2.75rem); /* 32-44px */
-  font-weight: 800;
+  font-size: clamp(2rem, 1.75rem + 1.25vw, 2.75rem);
+  font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum", "zero";
+  font-feature-settings: "ss03", "tnum", "zero";
 }
 
 .metric-athletic-card {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum", "zero";
+  font-feature-settings: "ss03", "tnum", "zero";
 }
 
 .font-tabular {
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum", "zero";
+  font-feature-settings: "ss03", "tnum", "zero";
+}
+
+/* DESIGN.md Pill Button Vocabulary */
+.btn-primary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-primary-pill:hover {
+  background-color: #3f3f46;
+}
+.btn-primary-pill:active {
+  transform: scale(0.98);
+}
+
+.btn-aloe-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #c1fbd4;
+  color: #000000;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-aloe-pill:hover {
+  background-color: #aaf5c2;
+}
+.btn-aloe-pill:active {
+  transform: scale(0.98);
+}
+
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid #000000;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-outline-light:hover {
+  background-color: #fbfbf5;
+}
+.btn-outline-light:active {
+  transform: scale(0.98);
+}
+
+.btn-outline-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-outline-dark:hover {
+  background-color: #1e2c31;
+}
+.btn-outline-dark:active {
+  transform: scale(0.98);
+}
+
+/* DESIGN.md Elevation: Level 3 Stacked Micro-Shadows (Paper Halo) */
+.card-stack-shadow {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.03), 0 4px 4px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* DESIGN.md Elevation: Level 1 Inset Top Highlight for Dark Surfaces */
+.card-dark-sheen {
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* DESIGN.md Tags / Chips */
+.tag-mint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #c1fbd4;
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.tag-shade {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #e4e4e7;
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
 }
 
 /* Custom minimal scrollbar */
@@ -72,37 +221,21 @@ h3, .heading-3 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d4d4d8;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #a1a1aa;
 }
 
-/* Tactile button press & subtle hover states */
+/* Tactile button press */
 .btn-tactile {
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-tactile:active {
   transform: scale(0.98);
-}
-
-/* Shimmer animation for skeleton loaders */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
 }
 
 /* Thermal receipt printable styling */

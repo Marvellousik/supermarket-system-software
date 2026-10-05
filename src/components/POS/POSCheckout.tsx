@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Check,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { Product, CartItem, Receipt, ReceiptItem } from "@/types/Entities";
 import { formatNaira, playScannerBeep } from "@/utils/formatters";
@@ -100,18 +101,20 @@ export default function POSCheckout({
           p.code.toLowerCase().includes(q) ||
           p.category.toLowerCase().includes(q)
       )
-      .slice(0, 6);
+      .slice(0, 8);
     setSearchResults(matches);
   }, [searchQuery, products]);
 
-  const handleScanOrSubmit = (codeToSearch: string) => {
-    const clean = codeToSearch.trim();
-    if (!clean) return;
+  const handleScanOrSubmit = (codeToScan?: string) => {
+    const raw = codeToScan || barcodeInput;
+    if (!raw.trim()) return;
 
+    const clean = raw.trim().toLowerCase();
     const found = products.find(
       (p) =>
-        p.barcode.toLowerCase() === clean.toLowerCase() ||
-        p.code.toLowerCase() === clean.toLowerCase()
+        p.barcode.toLowerCase() === clean ||
+        p.code.toLowerCase() === clean ||
+        p.name.toLowerCase() === clean
     );
 
     if (found) {
@@ -239,14 +242,9 @@ export default function POSCheckout({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalReceipt),
       });
-    } catch (e) {
-      console.error("Backend transaction log failure", e);
-    }
+    } catch {}
 
-    if (onAddTransaction) {
-      onAddTransaction(finalReceipt);
-    }
-
+    onAddTransaction?.(finalReceipt);
     setActiveReceipt(finalReceipt);
     setIsPaymentModalOpen(false);
     setIsReceiptModalOpen(true);
@@ -262,11 +260,11 @@ export default function POSCheckout({
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 font-sans text-slate-800">
+    <div className="w-full flex flex-col gap-4 font-sans text-black">
       {/* DIRECT MACHINE / TERMINAL SWITCHER BAR */}
-      <div className="bg-white border border-slate-200 shadow-xs p-3 rounded-lg flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white border border-[#e4e4e7] card-stack-shadow p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap min-w-0 flex-1">
-          <span className="text-[11px] font-mono uppercase text-slate-500 font-bold tracking-wider mr-1 shrink-0">
+          <span className="text-[11px] font-mono uppercase text-[#71717a] font-semibold tracking-wider mr-1 shrink-0">
             Active Register:
           </span>
           {machines.map((m) => {
@@ -276,15 +274,15 @@ export default function POSCheckout({
                 key={m.id}
                 type="button"
                 onClick={() => switchMachine(m.id)}
-                className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border cursor-pointer shrink-0 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all border cursor-pointer shrink-0 ${
                   isSelected
-                    ? "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs"
-                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                    ? "bg-black border-black text-white shadow-xs"
+                    : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:text-black hover:border-black"
                 }`}
               >
                 <span>Machine 0{m.id}</span>
                 {isSelected ? (
-                  <span className="ml-1.5 text-[9px] bg-emerald-600 text-white px-1 py-0.2 rounded font-sans uppercase font-semibold">
+                  <span className="ml-1.5 text-[9px] bg-[#c1fbd4] text-black px-1.5 py-0.5 rounded-full font-sans uppercase font-bold">
                     ACTIVE
                   </span>
                 ) : null}
@@ -295,22 +293,22 @@ export default function POSCheckout({
           <button
             type="button"
             onClick={handleAddNewTerminal}
-            className="px-2.5 py-1.5 rounded bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 text-slate-600 hover:text-slate-900 text-xs font-mono transition-colors cursor-pointer shrink-0"
+            className="px-3 py-1.5 rounded-full bg-[#fbfbf5] hover:bg-[#f4f4ec] border border-dashed border-[#a1a1aa] text-[#52525b] hover:text-black text-xs font-mono transition-colors cursor-pointer shrink-0"
           >
             + Add Terminal
           </button>
         </div>
 
         <div className="flex items-center gap-3 text-xs font-mono shrink-0">
-          <span className="text-slate-500">
-            Cashier: <strong className="text-slate-900 uppercase">{currentUser?.username || "admin"}</strong>
+          <span className="text-[#71717a]">
+            Cashier: <strong className="text-black uppercase">{currentUser?.username || "admin"}</strong>
           </span>
-          <span className="text-slate-300">|</span>
+          <span className="text-[#e4e4e7]">|</span>
           <button
             onClick={() => setIsScannerModalOpen(true)}
-            className="px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded shadow-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+            className="btn-outline-light px-3.5 py-1.5 text-xs font-medium flex items-center gap-1.5"
           >
-            <Camera className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+            <Camera className="w-3.5 h-3.5 text-[#71717a] shrink-0" />
             <span>Camera Scanner</span>
           </button>
         </div>
@@ -321,10 +319,10 @@ export default function POSCheckout({
         {/* Left Column: Barcode Scanning & Itemized Table */}
         <div className="lg:col-span-8 flex flex-col gap-3">
           {/* Scanner Input Strip */}
-          <div className="bg-white border border-slate-200 shadow-xs p-3 rounded-lg space-y-2">
+          <div className="bg-white border border-[#e4e4e7] card-stack-shadow p-4 rounded-xl space-y-3">
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
-                <Barcode className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Barcode className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   ref={barcodeInputRef}
                   type="text"
@@ -336,25 +334,25 @@ export default function POSCheckout({
                     }
                   }}
                   placeholder="Scan barcode with scanner or enter code (e.g. 89010001001)..."
-                  className="w-full bg-slate-50 border border-slate-300 focus:bg-white focus:border-emerald-600 pl-9 pr-3 py-2 rounded text-slate-900 placeholder-slate-400 text-xs font-mono focus:outline-none transition-colors"
+                  className="w-full bg-[#fbfbf5] border border-[#e4e4e7] focus:bg-white focus:border-black pl-10 pr-3 py-2.5 rounded-md text-black placeholder-[#a1a1aa] text-xs font-mono focus:outline-none transition-colors"
                 />
               </div>
 
               <div className="relative sm:w-60">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-[#a1a1aa] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Filter catalog..."
-                  className="w-full bg-slate-50 border border-slate-300 focus:bg-white focus:border-emerald-600 pl-8 pr-3 py-2 rounded text-slate-900 placeholder-slate-400 text-xs focus:outline-none transition-colors"
+                  className="w-full bg-[#fbfbf5] border border-[#e4e4e7] focus:bg-white focus:border-black pl-9 pr-3 py-2.5 rounded-md text-black placeholder-[#a1a1aa] text-xs focus:outline-none transition-colors"
                 />
               </div>
 
               <button
                 type="button"
                 onClick={() => handleScanOrSubmit(barcodeInput)}
-                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded shrink-0 transition-colors shadow-xs cursor-pointer"
+                className="btn-primary-pill px-5 py-2.5 text-xs font-semibold shrink-0"
               >
                 Scan Code
               </button>
@@ -362,8 +360,8 @@ export default function POSCheckout({
 
             {/* Instant Catalog Match Dropdown */}
             {searchResults.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-lg p-1 space-y-0.5 shadow-xl">
-                <div className="text-[10px] text-slate-400 font-mono uppercase px-2 py-1 font-semibold">
+              <div className="bg-white border border-[#e4e4e7] rounded-xl p-1.5 space-y-1 shadow-xl">
+                <div className="text-[10px] text-[#a1a1aa] font-mono uppercase px-2 py-1 font-semibold">
                   Catalog Match ({searchResults.length})
                 </div>
                 {searchResults.map((product) => (
@@ -375,17 +373,17 @@ export default function POSCheckout({
                       setSearchQuery("");
                       setSearchResults([]);
                     }}
-                    className="w-full text-left p-2 rounded hover:bg-slate-50 flex items-center justify-between transition-colors font-mono text-xs cursor-pointer border-b border-slate-50 last:border-b-0"
+                    className="w-full text-left p-2.5 rounded-lg hover:bg-[#fbfbf5] flex items-center justify-between transition-colors font-mono text-xs cursor-pointer border-b border-[#fbfbf5] last:border-b-0"
                   >
                     <div>
-                      <span className="text-slate-900 font-sans font-medium">
+                      <span className="text-black font-sans font-medium">
                         {product.name}
                       </span>
-                      <span className="ml-2 text-slate-500 text-[11px]">
+                      <span className="ml-2 text-[#71717a] text-[11px]">
                         [{product.barcode}]
                       </span>
                     </div>
-                    <div className="text-emerald-700 font-bold">
+                    <div className="text-black font-bold">
                       {formatNaira(product.price)}
                     </div>
                   </button>
@@ -396,37 +394,37 @@ export default function POSCheckout({
             {/* Status feedback */}
             {scanFeedback && (
               <div
-                className={`p-2 rounded border text-xs font-mono flex items-center gap-2 ${
+                className={`p-2.5 rounded-full border text-xs font-mono flex items-center gap-2 ${
                   scanFeedback.type === "success"
-                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                    ? "bg-[#c1fbd4] border-[#a8f2c2] text-black"
                     : "bg-rose-50 border-rose-200 text-rose-800"
                 }`}
               >
                 {scanFeedback.type === "success" ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <Check className="w-4 h-4 text-black shrink-0" />
                 ) : (
-                  <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
                 )}
-                <span>{scanFeedback.message}</span>
+                <span className="font-semibold">{scanFeedback.message}</span>
               </div>
             )}
           </div>
 
           {/* Itemized Order Table */}
-          <div className="bg-white border border-slate-200 shadow-xs rounded-lg overflow-hidden flex-1 min-h-[360px] flex flex-col">
-            <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 font-mono uppercase font-bold text-slate-800">
-                <ShoppingCart className="w-3.5 h-3.5 text-slate-500" />
+          <div className="bg-white border border-[#e4e4e7] card-stack-shadow rounded-xl overflow-hidden flex-1 min-h-[360px] flex flex-col">
+            <div className="px-5 py-3 bg-[#fbfbf5] border-b border-[#e4e4e7] flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 font-mono uppercase font-bold text-black">
+                <ShoppingCart className="w-3.5 h-3.5 text-[#71717a]" />
                 <span>Line Items ({cart.length})</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-slate-500 font-semibold">
+                <span className="font-mono text-[#71717a] font-semibold">
                   {cart.reduce((total, i) => total + i.quantity, 0)} Units
                 </span>
                 <button
                   onClick={clearCart}
                   disabled={cart.length === 0}
-                  className="text-slate-500 hover:text-slate-900 disabled:opacity-30 text-[11px] font-mono flex items-center gap-1 cursor-pointer"
+                  className="text-[#71717a] hover:text-black disabled:opacity-30 text-[11px] font-mono flex items-center gap-1 cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
                   Reset
@@ -435,15 +433,15 @@ export default function POSCheckout({
             </div>
 
             {cart.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400 font-mono text-xs">
-                <Barcode className="w-10 h-10 text-slate-300 mb-2" />
-                <p className="text-slate-800 font-sans font-bold text-sm mb-1">
+              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-[#a1a1aa] font-mono text-xs">
+                <Barcode className="w-10 h-10 text-[#d4d4d8] mb-2" />
+                <p className="text-black font-sans font-semibold text-sm mb-1">
                   Terminal Register Empty
                 </p>
-                <p className="text-slate-500 max-w-sm mb-4">
-                  Scan barcode with gun, enter product code, or select quick items below.
+                <p className="text-[#71717a] max-w-sm mb-4">
+                  Scan barcode with scanner, enter product code, or select quick items below.
                 </p>
-                <div className="flex flex-wrap gap-1.5 justify-center max-w-lg">
+                <div className="flex flex-wrap gap-2 justify-center max-w-lg">
                   {products.slice(0, 5).map((p) => (
                     <button
                       key={p.id}
@@ -451,70 +449,70 @@ export default function POSCheckout({
                         addToCart(p);
                         if (soundEnabled) playScannerBeep();
                       }}
-                      className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded text-xs transition-colors flex items-center gap-1 font-mono cursor-pointer shadow-2xs"
+                      className="px-3.5 py-1.5 bg-[#fbfbf5] hover:bg-[#f4f4ec] border border-[#e4e4e7] text-black rounded-full text-xs transition-colors flex items-center gap-1.5 font-mono cursor-pointer"
                     >
-                      <Plus className="w-3 h-3 text-slate-400" />
+                      <Plus className="w-3 h-3 text-[#71717a]" />
                       <span>{p.name.substring(0, 18)}..</span>
-                      <span className="text-slate-900 font-bold">{formatNaira(p.price)}</span>
+                      <span className="text-black font-bold">{formatNaira(p.price)}</span>
                     </button>
                   ))}
                 </div>
               </div>
             ) : (
-              <div className="overflow-x-auto divide-y divide-slate-100 max-h-[460px]">
+              <div className="overflow-x-auto divide-y divide-[#e4e4e7] max-h-[460px]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50/80 text-slate-500 font-mono text-[10px] uppercase border-b border-slate-200">
+                  <thead className="bg-[#fbfbf5] text-[#71717a] font-mono text-[10px] uppercase border-b border-[#e4e4e7]">
                     <tr>
-                      <th className="py-2.5 px-3">Item Description</th>
+                      <th className="py-2.5 px-4">Item Description</th>
                       <th className="py-2.5 px-3 text-center">Unit Price</th>
                       <th className="py-2.5 px-3 text-center">Qty</th>
-                      <th className="py-2.5 px-3 text-right">Ext Total</th>
-                      <th className="py-2.5 px-2 text-center">Del</th>
+                      <th className="py-2.5 px-4 text-right">Ext Total</th>
+                      <th className="py-2.5 px-3 text-center">Del</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[#e4e4e7]">
                     {cart.map((item) => (
-                      <tr key={item.product.id} className="hover:bg-slate-50/70 transition-colors">
-                        <td className="py-2.5 px-3 min-w-[150px] max-w-[240px]">
-                          <div className="font-semibold text-slate-900 truncate" title={item.product.name}>
+                      <tr key={item.product.id} className="hover:bg-[#fbfbf5] transition-colors">
+                        <td className="py-3 px-4 min-w-[150px] max-w-[240px]">
+                          <div className="font-semibold text-black truncate" title={item.product.name}>
                             {item.product.name}
                           </div>
-                          <div className="text-[10px] font-mono text-slate-400 truncate">
+                          <div className="text-[10px] font-mono text-[#a1a1aa] truncate">
                             CODE: {item.product.code} | BARCODE: {item.product.barcode}
                           </div>
                         </td>
-                        <td className="py-2.5 px-3 text-center font-mono text-slate-700 shrink-0">
+                        <td className="py-3 px-3 text-center font-mono text-[#52525b] shrink-0">
                           {formatNaira(item.product.price)}
                         </td>
-                        <td className="py-2.5 px-3 shrink-0">
+                        <td className="py-3 px-3 shrink-0">
                           <div className="flex items-center justify-center gap-1">
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.product.id, -1)}
-                              className="w-5 h-5 bg-white border border-slate-300 rounded flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 shadow-2xs cursor-pointer shrink-0"
+                              className="w-6 h-6 bg-white border border-[#e4e4e7] rounded-full flex items-center justify-center text-black hover:bg-[#fbfbf5] cursor-pointer shrink-0"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
-                            <span className="w-6 text-center font-mono font-bold text-slate-900">
+                            <span className="w-6 text-center font-mono font-bold text-black">
                               {item.quantity}
                             </span>
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.product.id, 1)}
-                              className="w-5 h-5 bg-white border border-slate-300 rounded flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 shadow-2xs cursor-pointer shrink-0"
+                              className="w-6 h-6 bg-white border border-[#e4e4e7] rounded-full flex items-center justify-center text-black hover:bg-[#fbfbf5] cursor-pointer shrink-0"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
                           </div>
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-900 shrink-0">
+                        <td className="py-3 px-4 text-right font-mono font-bold text-black shrink-0">
                           {formatNaira(item.product.price * item.quantity)}
                         </td>
-                        <td className="py-2.5 px-2 text-center shrink-0">
+                        <td className="py-3 px-3 text-center shrink-0">
                           <button
                             type="button"
                             onClick={() => removeFromCart(item.product.id)}
-                            className="text-slate-400 hover:text-rose-600 p-1 cursor-pointer transition-colors"
+                            className="text-[#a1a1aa] hover:text-rose-600 p-1 rounded-full cursor-pointer transition-colors"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -530,32 +528,32 @@ export default function POSCheckout({
 
         {/* Right Column: Checkout Totals & Finalize */}
         <div className="lg:col-span-4 flex flex-col gap-3">
-          <div className="bg-white border border-slate-200 shadow-xs rounded-lg p-4 space-y-3 font-mono text-xs">
-            <div className="pb-2 border-b border-slate-200 flex justify-between items-center">
-              <span className="font-sans font-bold text-sm text-slate-900 uppercase tracking-wide">
+          <div className="bg-white border border-[#e4e4e7] card-stack-shadow rounded-xl p-5 space-y-3.5 font-mono text-xs">
+            <div className="pb-2.5 border-b border-[#e4e4e7] flex justify-between items-center">
+              <span className="font-sans font-semibold text-sm text-black uppercase tracking-wide">
                 Summary
               </span>
-              <span className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold">
+              <span className="tag-mint text-[11px] px-2.5 py-0.5">
                 Terminal 0{activeMachineId}
               </span>
             </div>
 
-            <div className="flex justify-between text-slate-600">
+            <div className="flex justify-between text-[#52525b]">
               <span>Subtotal:</span>
-              <span className="text-slate-900 font-bold">{formatNaira(subtotal)}</span>
+              <span className="text-black font-bold">{formatNaira(subtotal)}</span>
             </div>
 
-            <div className="flex justify-between items-center text-slate-600">
+            <div className="flex justify-between items-center text-[#52525b]">
               <span>Discount (%):</span>
-              <div className="flex gap-1 font-sans">
+              <div className="flex gap-1.5 font-sans">
                 {[0, 5, 10].map((rate) => (
                   <button
                     key={rate}
                     onClick={() => setDiscountPercent(rate)}
-                    className={`px-2 py-0.5 rounded text-[11px] border cursor-pointer ${
+                    className={`px-2.5 py-0.5 rounded-full text-[11px] border cursor-pointer ${
                       discountPercent === rate
-                        ? "bg-emerald-600 border-emerald-600 text-white font-bold shadow-xs"
-                        : "bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        ? "bg-black border-black text-white font-semibold shadow-xs"
+                        : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:text-black"
                     }`}
                   >
                     {rate}%
@@ -565,95 +563,96 @@ export default function POSCheckout({
             </div>
 
             {discountAmount > 0 && (
-              <div className="flex justify-between text-emerald-700 font-semibold">
+              <div className="flex justify-between text-black font-semibold">
                 <span>Discount ({discountPercent}%):</span>
                 <span>-{formatNaira(discountAmount)}</span>
               </div>
             )}
 
-            <div className="flex justify-between items-center text-slate-600 pt-1">
+            <div className="flex justify-between items-center text-[#52525b] pt-1">
               <label className="flex items-center gap-1.5 cursor-pointer font-sans">
                 <input
                   type="checkbox"
                   checked={taxEnabled}
                   onChange={(e) => setTaxEnabled(e.target.checked)}
-                  className="rounded border-slate-300 text-emerald-600 focus:ring-0 w-3.5 h-3.5 cursor-pointer"
+                  className="rounded border-[#e4e4e7] text-black focus:ring-0 w-3.5 h-3.5 cursor-pointer"
                 />
                 <span>VAT (7.5%):</span>
               </label>
-              <span className="text-slate-900 font-semibold">
+              <span className="text-black font-semibold">
                 {taxEnabled ? formatNaira(taxAmount) : "₦0.00"}
               </span>
             </div>
 
-            {/* Total Due Callout Box */}
-            <div className="bg-slate-900 text-white p-4 rounded-xl shadow-sm">
-              <div className="text-xs font-medium text-slate-400 uppercase tracking-wider font-sans">
+            {/* Total Due Callout Box - DESIGN.md Dark Elevated Panel */}
+            <div className="bg-black text-white p-5 rounded-xl card-dark-sheen">
+              <div className="text-xs font-normal text-[#a1a1aa] uppercase tracking-widest font-sans">
                 Total Amount Due (NGN)
               </div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight tabular-nums mt-1">
+              <div className="text-3xl sm:text-4xl font-light text-[#c1fbd4] tracking-tight tabular-nums mt-1 font-mono">
                 {formatNaira(totalAmount)}
               </div>
             </div>
 
+            {/* Signature Aloe Mint Pill CTA */}
             <button
               type="button"
               onClick={handleOpenPayment}
               disabled={cart.length === 0}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-30 text-white font-sans font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+              className="btn-aloe-pill w-full py-3.5 text-sm font-semibold shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-30"
             >
               <CreditCard className="w-4 h-4" />
-              <span>Process Payment</span>
+              <span>Charge {formatNaira(totalAmount)}</span>
             </button>
           </div>
 
           {/* Machine Station Details */}
-          <div className="bg-white border border-slate-200 shadow-xs rounded-lg p-3 text-[11px] font-mono text-slate-600 space-y-1">
+          <div className="bg-white border border-[#e4e4e7] card-stack-shadow rounded-xl p-4 text-[11px] font-mono text-[#71717a] space-y-1.5">
             <div className="flex justify-between">
               <span>Terminal Station:</span>
-              <strong className="text-slate-900 font-bold">Machine 0{activeMachineId}</strong>
+              <strong className="text-black font-bold">Machine 0{activeMachineId}</strong>
             </div>
             <div className="flex justify-between">
               <span>Operator On Duty:</span>
-              <strong className="text-slate-900 uppercase font-bold">{currentUser?.username || "admin"}</strong>
+              <strong className="text-black uppercase font-bold">{currentUser?.username || "admin"}</strong>
             </div>
             <div className="flex justify-between">
               <span>Currency:</span>
-              <strong className="text-slate-800">NGN (₦)</strong>
+              <strong className="text-black">NGN (₦)</strong>
             </div>
-            <div className="text-[10px] text-slate-400 pt-1.5 border-t border-slate-100">
+            <div className="text-[10px] text-[#a1a1aa] pt-2 border-t border-[#e4e4e7]">
               All sales processed on this terminal are persisted into SQLite and tied to Machine 0{activeMachineId}.
             </div>
           </div>
         </div>
       </div>
 
-      {/* PAYMENT PROCESSING MODAL */}
+      {/* PAYMENT PROCESSING MODAL - DESIGN.md Level 4 Elevation */}
       {isPaymentModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-lg w-full max-w-md overflow-hidden shadow-2xl font-sans flex flex-col max-h-[90vh]">
-            <div className="px-5 py-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
-              <span className="font-bold text-sm text-slate-900 uppercase tracking-wider">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-[#e4e4e7] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl font-sans flex flex-col max-h-[90vh]">
+            <div className="px-6 py-4 border-b border-[#e4e4e7] bg-[#fbfbf5] flex items-center justify-between shrink-0">
+              <span className="font-semibold text-sm text-black tracking-tight">
                 Complete Transaction
               </span>
               <button
                 onClick={() => setIsPaymentModalOpen(false)}
-                className="text-slate-400 hover:text-slate-700 font-mono text-sm cursor-pointer shrink-0 ml-2"
+                className="p-1 rounded-full text-[#71717a] hover:text-black cursor-pointer shrink-0 ml-2"
               >
-                [X]
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-5 space-y-4 flex-1 min-h-0 overflow-y-auto">
-              <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-lg flex justify-between items-baseline font-mono">
-                <span className="text-xs text-emerald-800 font-semibold font-sans uppercase">Total Due:</span>
-                <span className="text-xl font-bold text-emerald-950">
+            <div className="p-6 space-y-4 flex-1 min-h-0 overflow-y-auto">
+              <div className="bg-[#fbfbf5] border border-[#e4e4e7] p-4 rounded-xl flex justify-between items-baseline font-mono">
+                <span className="text-xs text-[#71717a] font-sans uppercase font-medium">Total Due:</span>
+                <span className="text-2xl font-light text-black">
                   {formatNaira(totalAmount)}
                 </span>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-mono uppercase text-slate-500 font-bold">
+              <div className="space-y-2">
+                <label className="text-xs font-mono uppercase text-[#71717a] font-semibold">
                   Payment Method:
                 </label>
                 <div className="grid grid-cols-3 gap-2 font-mono text-xs">
@@ -663,10 +662,10 @@ export default function POSCheckout({
                       setPaymentMethod("cash");
                       setAmountTendered(totalAmount.toString());
                     }}
-                    className={`p-2.5 rounded-md border text-center font-bold transition-all cursor-pointer ${
+                    className={`py-2 px-3 rounded-full border text-center font-semibold transition-all cursor-pointer ${
                       paymentMethod === "cash"
-                        ? "bg-emerald-50 border-2 border-emerald-600 text-emerald-800 shadow-xs"
-                        : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                        ? "bg-black text-white border-black shadow-xs"
+                        : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:text-black"
                     }`}
                   >
                     Cash
@@ -677,10 +676,10 @@ export default function POSCheckout({
                       setPaymentMethod("card");
                       setAmountTendered(totalAmount.toString());
                     }}
-                    className={`p-2.5 rounded-md border text-center font-bold transition-all cursor-pointer ${
+                    className={`py-2 px-3 rounded-full border text-center font-semibold transition-all cursor-pointer ${
                       paymentMethod === "card"
-                        ? "bg-emerald-50 border-2 border-emerald-600 text-emerald-800 shadow-xs"
-                        : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                        ? "bg-black text-white border-black shadow-xs"
+                        : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:text-black"
                     }`}
                   >
                     POS Card
@@ -691,10 +690,10 @@ export default function POSCheckout({
                       setPaymentMethod("transfer");
                       setAmountTendered(totalAmount.toString());
                     }}
-                    className={`p-2.5 rounded-md border text-center font-bold transition-all cursor-pointer ${
+                    className={`py-2 px-3 rounded-full border text-center font-semibold transition-all cursor-pointer ${
                       paymentMethod === "transfer"
-                        ? "bg-emerald-50 border-2 border-emerald-600 text-emerald-800 shadow-xs"
-                        : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                        ? "bg-black text-white border-black shadow-xs"
+                        : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:text-black"
                     }`}
                   >
                     Transfer
@@ -703,25 +702,25 @@ export default function POSCheckout({
               </div>
 
               {paymentMethod === "cash" && (
-                <div className="space-y-2 bg-slate-50 p-3.5 rounded-lg border border-slate-200 font-mono text-xs">
-                  <label className="text-slate-600 font-semibold block">
+                <div className="space-y-2.5 bg-[#fbfbf5] p-4 rounded-xl border border-[#e4e4e7] font-mono text-xs">
+                  <label className="text-[#52525b] font-medium block">
                     Cash Tendered (₦):
                   </label>
                   <input
                     type="number"
                     value={amountTendered}
                     onChange={(e) => setAmountTendered(e.target.value)}
-                    className="w-full bg-white border border-slate-300 focus:border-emerald-600 rounded-md px-3 py-2 text-slate-900 font-mono text-base font-bold focus:outline-none shadow-xs"
+                    className="w-full bg-white border border-[#e4e4e7] focus:border-black rounded-md px-3 py-2 text-black font-mono text-base font-bold focus:outline-none"
                     placeholder="Enter customer cash..."
                   />
 
-                  <div className="flex flex-wrap gap-1 pt-1">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
                     {[1000, 2000, 5000, 10000, 20000, 50000].map((amt) => (
                       <button
                         key={amt}
                         type="button"
                         onClick={() => setAmountTendered(amt.toString())}
-                        className="px-2 py-0.5 bg-white hover:bg-slate-100 border border-slate-200 text-[10px] text-slate-700 rounded shadow-2xs cursor-pointer font-medium"
+                        className="px-2.5 py-1 bg-white hover:bg-[#fbfbf5] border border-[#e4e4e7] text-[10px] text-black rounded-full cursor-pointer font-medium"
                       >
                         +{formatNaira(amt)}
                       </button>
@@ -729,17 +728,17 @@ export default function POSCheckout({
                     <button
                       type="button"
                       onClick={() => setAmountTendered(totalAmount.toString())}
-                      className="px-2 py-0.5 bg-slate-900 text-white text-[10px] font-bold rounded cursor-pointer"
+                      className="px-2.5 py-1 bg-black text-white text-[10px] font-bold rounded-full cursor-pointer"
                     >
                       Exact
                     </button>
                   </div>
 
-                  <div className="flex justify-between items-center pt-2 border-t border-slate-200">
-                    <span className="text-slate-600">Change Due:</span>
+                  <div className="flex justify-between items-center pt-2.5 border-t border-[#e4e4e7]">
+                    <span className="text-[#71717a]">Change Due:</span>
                     <span
-                      className={`text-sm font-bold ${
-                        changeDue >= 0 ? "text-emerald-700 font-mono font-bold" : "text-rose-600"
+                      className={`text-sm font-bold font-mono ${
+                        changeDue >= 0 ? "text-black" : "text-rose-600"
                       }`}
                     >
                       {formatNaira(changeDue)}
@@ -748,19 +747,19 @@ export default function POSCheckout({
                 </div>
               )}
 
-              <div className="text-[11px] font-mono text-slate-500 flex justify-between border-t border-slate-100 pt-2">
+              <div className="text-[11px] font-mono text-[#71717a] flex justify-between border-t border-[#e4e4e7] pt-2">
                 <span>Terminal Destination:</span>
-                <span className="text-slate-900 font-bold">
+                <span className="text-black font-bold">
                   Machine 0{activeMachineId}
                 </span>
               </div>
             </div>
 
-            <div className="px-5 py-3 border-t border-slate-200 bg-slate-50 flex justify-end gap-2 font-sans shrink-0">
+            <div className="px-6 py-4 border-t border-[#e4e4e7] bg-[#fbfbf5] flex justify-end gap-2.5 font-sans shrink-0">
               <button
                 type="button"
                 onClick={() => setIsPaymentModalOpen(false)}
-                className="px-3 py-1.5 text-slate-500 hover:text-slate-800 text-xs font-mono cursor-pointer shrink-0"
+                className="px-4 py-2 text-[#71717a] hover:text-black text-xs font-mono cursor-pointer shrink-0"
               >
                 Cancel
               </button>
@@ -768,7 +767,7 @@ export default function POSCheckout({
                 type="button"
                 onClick={handleProcessSale}
                 disabled={paymentMethod === "cash" && tenderedNumber < totalAmount}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-30 text-white font-bold text-xs rounded-md shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+                className="btn-primary-pill px-5 py-2.5 text-xs font-semibold flex items-center gap-1.5 cursor-pointer disabled:opacity-30"
               >
                 <ReceiptText className="w-3.5 h-3.5 shrink-0" />
                 <span>Confirm Sale & Print PDF</span>

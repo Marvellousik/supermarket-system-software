@@ -36,14 +36,14 @@ export default function ReportsView() {
   };
 
   return (
-    <div className="w-full space-y-5 font-sans text-slate-800">
+    <div className="w-full space-y-6 font-sans text-black">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#e4e4e7]">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl display-thin text-black tracking-tight">
             Financial & Store Performance Audit
           </h1>
-          <p className="text-sm font-normal text-slate-500 mt-1">
+          <p className="text-sm font-normal text-[#52525b] mt-1">
             Tender reconciliation, category margins & executive audit statements
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function ReportsView() {
         <button
           onClick={handleExportReport}
           disabled={downloading}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm text-xs transition-colors flex items-center gap-1.5 cursor-pointer btn-tactile"
+          className="btn-primary-pill px-5 py-2.5 text-xs font-medium flex items-center gap-2 cursor-pointer shadow-xs"
         >
           <Download className="w-3.5 h-3.5" />
           <span>{downloading ? "Preparing PDF..." : "Export Executive Audit PDF"}</span>
@@ -61,17 +61,17 @@ export default function ReportsView() {
       {/* Two Column Visual Breakdowns */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Payment Methods Distribution */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs space-y-4">
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-6 card-stack-shadow space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#71717a] font-semibold">
                 Tender Distribution
               </span>
-              <h3 className="text-sm font-bold text-slate-900 mt-0.5">
+              <h3 className="text-sm font-semibold text-black mt-1 tracking-tight">
                 Payment Channel Settlement Split
               </h3>
             </div>
-            <span className="text-xs font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+            <span className="text-xs font-mono text-black font-semibold bg-[#c1fbd4] px-2.5 py-0.5 rounded-full border border-[#a8f5c2]">
               100% Reconciled
             </span>
           </div>
@@ -81,10 +81,10 @@ export default function ReportsView() {
             {PAYMENT_SPLIT.map((item) => (
               <div key={item.method} className="space-y-1">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-700 font-medium font-sans">{item.method}</span>
-                  <span className="font-bold text-slate-900">{item.percentage}% ({item.count} orders)</span>
+                  <span className="text-[#52525b] font-medium font-sans">{item.method}</span>
+                  <span className="font-bold text-black">{item.percentage}% ({item.count} orders)</span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-[#fbfbf5] border border-[#e4e4e7] overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
@@ -97,24 +97,24 @@ export default function ReportsView() {
             ))}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-slate-500 flex justify-between">
-            <span>Primary settlement gateway: <strong>POS Card (58%)</strong></span>
-            <span>Card failure rate: <strong>0.02%</strong></span>
+          <div className="pt-3 border-t border-[#e4e4e7] text-[11px] font-mono text-[#71717a] flex justify-between">
+            <span>Primary settlement gateway: <strong className="text-black">POS Card (58%)</strong></span>
+            <span>Card failure rate: <strong className="text-black">0.02%</strong></span>
           </div>
         </div>
 
         {/* Category Revenue Contribution */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs space-y-4">
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-6 card-stack-shadow space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#71717a] font-semibold">
                 Revenue Share
               </span>
-              <h3 className="text-sm font-bold text-slate-900 mt-0.5">
+              <h3 className="text-sm font-semibold text-black mt-1 tracking-tight">
                 Category Contribution to Gross Sales
               </h3>
             </div>
-            <span className="text-xs font-mono text-slate-500">
+            <span className="text-xs font-mono text-[#71717a]">
               8 FMCG Departments
             </span>
           </div>
@@ -123,80 +123,80 @@ export default function ReportsView() {
             {CATEGORY_DISTRIBUTION.map((cat) => (
               <div key={cat.name} className="flex items-center justify-between text-xs font-mono">
                 <div className="flex items-center gap-2 max-w-[200px]">
-                  <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: cat.color }} />
-                  <span className="font-sans text-slate-700 truncate">{cat.name}</span>
+                  <span className="w-2.5 h-2.5 rounded-[4px] shrink-0" style={{ backgroundColor: cat.color }} />
+                  <span className="font-sans text-[#52525b] truncate">{cat.name}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-slate-400">{cat.percentage}%</span>
-                  <span className="font-bold text-slate-900">{formatNaira(cat.amount)}</span>
+                  <span className="text-[#a1a1aa]">{cat.percentage}%</span>
+                  <span className="font-bold text-black tabular-nums">{formatNaira(cat.amount)}</span>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-slate-500 flex justify-between">
-            <span>Fastest growing department: <strong>Groceries (+18.4%)</strong></span>
+          <div className="pt-3 border-t border-[#e4e4e7] text-[11px] font-mono text-[#71717a] flex justify-between">
+            <span>Fastest growing department: <strong className="text-black">Groceries (+18.4%)</strong></span>
           </div>
         </div>
       </div>
 
       {/* Daily Reconciliation Ledger Table */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
-        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+      <div className="bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow overflow-hidden">
+        <div className="px-6 py-4 bg-[#fbfbf5] border-b border-[#e4e4e7] flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-black">
               Daily Settlement Ledger (Audit Reconciled)
             </h3>
-            <p className="text-[11px] text-slate-500 font-sans">
+            <p className="text-[11px] text-[#71717a] font-sans mt-0.5">
               Audited daily financial ledger cross-referenced with SQLite transaction logs
             </p>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono text-[#a1a1aa]">
             Currency: Nigerian Naira (₦)
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-slate-50/80 text-slate-500 uppercase text-[10px] border-b border-slate-200 font-bold">
+            <thead className="bg-[#fbfbf5] text-[#71717a] uppercase text-[10px] border-b border-[#e4e4e7] font-semibold">
               <tr>
-                <th className="py-3 px-4">Audit Period</th>
-                <th className="py-3 px-3 text-center">Settled Receipts</th>
-                <th className="py-3 px-3 text-right">Gross Total (₦)</th>
-                <th className="py-3 px-3 text-right">VAT (7.5%)</th>
-                <th className="py-3 px-3 text-right">POS Card (₦)</th>
-                <th className="py-3 px-3 text-right">Cash (₦)</th>
-                <th className="py-3 px-3 text-right">Transfer (₦)</th>
-                <th className="py-3 px-4 text-center">Audit Status</th>
+                <th className="py-3.5 px-4">Audit Period</th>
+                <th className="py-3.5 px-3 text-center">Settled Receipts</th>
+                <th className="py-3.5 px-3 text-right">Gross Total (₦)</th>
+                <th className="py-3.5 px-3 text-right">VAT (7.5%)</th>
+                <th className="py-3.5 px-3 text-right">POS Card (₦)</th>
+                <th className="py-3.5 px-3 text-right">Cash (₦)</th>
+                <th className="py-3.5 px-3 text-right">Transfer (₦)</th>
+                <th className="py-3.5 px-4 text-center">Audit Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#e4e4e7]">
               {DAILY_AUDIT_LOGS.map((log) => (
-                <tr key={log.date} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-3 px-4 font-bold text-slate-900 font-sans">
+                <tr key={log.date} className="hover:bg-[#fbfbf5] transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-black font-sans">
                     {log.date}
                   </td>
-                  <td className="py-3 px-3 text-center text-slate-600">
+                  <td className="py-3.5 px-3 text-center text-[#52525b]">
                     {log.orders.toLocaleString()}
                   </td>
-                  <td className="py-3 px-3 text-right font-bold text-slate-900">
+                  <td className="py-3.5 px-3 text-right font-bold text-black tabular-nums">
                     {formatNaira(log.gross)}
                   </td>
-                  <td className="py-3 px-3 text-right text-slate-500">
+                  <td className="py-3.5 px-3 text-right text-[#71717a] tabular-nums">
                     {formatNaira(log.vat)}
                   </td>
-                  <td className="py-3 px-3 text-right text-emerald-700 font-semibold">
+                  <td className="py-3.5 px-3 text-right text-black font-medium tabular-nums">
                     {formatNaira(log.card)}
                   </td>
-                  <td className="py-3 px-3 text-right text-emerald-700 font-semibold">
+                  <td className="py-3.5 px-3 text-right text-black font-medium tabular-nums">
                     {formatNaira(log.cash)}
                   </td>
-                  <td className="py-3 px-3 text-right text-purple-700 font-semibold">
+                  <td className="py-3.5 px-3 text-right text-black font-medium tabular-nums">
                     {formatNaira(log.transfer)}
                   </td>
-                  <td className="py-3 px-4 text-center">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      <CheckCircle2 className="w-2.5 h-2.5" />
+                  <td className="py-3.5 px-4 text-center">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#c1fbd4] text-black border border-[#a8f5c2]">
+                      <CheckCircle2 className="w-3 h-3" />
                       {log.status}
                     </span>
                   </td>

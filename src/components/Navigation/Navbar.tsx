@@ -60,7 +60,7 @@ export default function Navbar({
 
   return (
     <>
-      <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+      <header className="w-full bg-white border-b border-[#e4e4e7] sticky top-0 z-40 card-stack-shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
           {/* Logo & System Metadata */}
           <div className="flex items-center gap-4">
@@ -79,15 +79,15 @@ export default function Navbar({
               <button
                 type="button"
                 onClick={() => setMachineDropdownOpen(!machineDropdownOpen)}
-                className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-[11px] font-mono text-slate-800 flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3 py-1 bg-[#fbfbf5] hover:bg-[#f4f4ec] border border-[#e4e4e7] rounded-full text-[11px] font-mono text-black flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span className="text-slate-500 font-sans text-[10px] uppercase font-bold tracking-wider">
+                <span className="text-[#71717a] font-sans text-[10px] uppercase font-bold tracking-wider">
                   Terminal:
                 </span>
-                <span className="font-bold text-emerald-700">
+                <span className="font-bold text-black">
                   Machine 0{activeMachineId}
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
+                <ChevronDown className="w-3 h-3 text-[#71717a]" />
               </button>
 
               {machineDropdownOpen && (
@@ -96,8 +96,8 @@ export default function Navbar({
                     className="fixed inset-0 z-40"
                     onClick={() => setMachineDropdownOpen(false)}
                   />
-                  <div className="absolute left-0 mt-1 w-48 bg-white border border-slate-200 rounded-md shadow-xl py-1 z-50 font-mono text-xs">
-                    <div className="px-3 py-1 text-[10px] text-slate-400 font-sans uppercase tracking-wider border-b border-slate-100">
+                  <div className="absolute left-0 mt-1 w-48 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow py-1 z-50 font-mono text-xs">
+                    <div className="px-3 py-1 text-[10px] text-[#71717a] font-sans uppercase tracking-wider border-b border-[#e4e4e7]">
                       Switch Active Machine
                     </div>
                   {machines.map((m) => (
@@ -108,15 +108,15 @@ export default function Navbar({
                         switchMachine(m.id);
                         setMachineDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer ${
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#fbfbf5] transition-colors cursor-pointer ${
                         activeMachineId === m.id
-                          ? "bg-emerald-50 text-emerald-800 font-bold border-l-2 border-emerald-600"
-                          : "text-slate-700"
+                          ? "bg-[#c1fbd4] text-black font-bold"
+                          : "text-[#52525b]"
                       }`}
                     >
                       <span>Machine 0{m.id}</span>
                       {activeMachineId === m.id && (
-                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1 py-0.2 rounded font-sans font-semibold">
+                        <span className="text-[10px] bg-black text-white px-2 py-0.5 rounded-full font-sans font-semibold">
                           ACTIVE
                         </span>
                       )}
@@ -128,20 +128,20 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Navigation Tabs - Enterprise Light Grid */}
-          <nav className="flex items-center bg-slate-100 p-1 rounded-md border border-slate-200 order-3 lg:order-2 w-full lg:w-auto justify-center overflow-x-auto font-sans text-xs">
+          {/* Navigation Tabs - Strict Pill Vocabulary */}
+          <nav className="flex items-center bg-[#fbfbf5] p-1 rounded-full border border-[#e4e4e7] order-3 lg:order-2 w-full lg:w-auto justify-center overflow-x-auto font-sans text-xs">
             <button
               onClick={() => setActiveTab("pos")}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === "pos"
-                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/80 font-bold"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-black text-white shadow-xs font-bold"
+                  : "text-[#52525b] hover:text-black"
               }`}
             >
-              <Scan className="w-3.5 h-3.5 text-emerald-600" />
+              <Scan className="w-3.5 h-3.5" />
               <span>POS Register</span>
               {cartCount > 0 && (
-                <span className="bg-emerald-600 text-white text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold">
+                <span className="bg-[#c1fbd4] text-black text-[10px] font-mono px-1.5 py-0.5 rounded-full font-bold">
                   {cartCount}
                 </span>
               )}
@@ -149,37 +149,37 @@ export default function Navbar({
 
             <button
               onClick={() => setActiveTab("products")}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === "products"
-                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/80 font-bold"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-black text-white shadow-xs font-bold"
+                  : "text-[#52525b] hover:text-black"
               }`}
             >
-              <Package className="w-3.5 h-3.5 text-slate-500" />
+              <Package className="w-3.5 h-3.5 text-[#71717a]" />
               <span>Catalog (150 Items)</span>
             </button>
 
             <button
               onClick={() => setActiveTab("receipts")}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === "receipts"
-                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/80 font-bold"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-black text-white shadow-xs font-bold"
+                  : "text-[#52525b] hover:text-black"
               }`}
             >
-              <ReceiptText className="w-3.5 h-3.5 text-slate-500" />
+              <ReceiptText className="w-3.5 h-3.5 text-[#71717a]" />
               <span>Transaction Logs</span>
             </button>
 
             <button
               onClick={() => setActiveTab("staff")}
-              className={`px-3.5 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === "staff"
-                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/80 font-bold"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-black text-white shadow-xs font-bold"
+                  : "text-[#52525b] hover:text-black"
               }`}
             >
-              <Users className="w-3.5 h-3.5 text-slate-500" />
+              <Users className="w-3.5 h-3.5 text-[#71717a]" />
               <span>Staff & Machines</span>
             </button>
           </nav>
@@ -190,18 +190,18 @@ export default function Navbar({
               type="button"
               onClick={() => setSoundEnabled(!soundEnabled)}
               title={soundEnabled ? "Mute scan sound" : "Unmute scan sound"}
-              className="p-1.5 rounded bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 border border-slate-200 shadow-xs transition-colors text-xs flex items-center gap-1 cursor-pointer"
+              className="p-2 rounded-full bg-white hover:bg-[#fbfbf5] text-[#52525b] hover:text-black border border-[#e4e4e7] shadow-xs transition-colors text-xs flex items-center gap-1 cursor-pointer"
             >
               {soundEnabled ? (
-                <Volume2 className="w-3.5 h-3.5 text-slate-700" />
+                <Volume2 className="w-3.5 h-3.5" />
               ) : (
-                <VolumeX className="w-3.5 h-3.5 text-slate-400" />
+                <VolumeX className="w-3.5 h-3.5 text-[#a1a1aa]" />
               )}
             </button>
 
             {/* Time */}
-            <div className="hidden sm:flex items-center gap-1 text-[11px] font-mono text-slate-600 bg-white px-2 py-1 rounded border border-slate-200 shadow-xs">
-              <Clock className="w-3 h-3 text-slate-400" />
+            <div className="hidden sm:flex items-center gap-1 text-[11px] font-mono text-[#52525b] bg-white px-2.5 py-1 rounded-full border border-[#e4e4e7] shadow-xs">
+              <Clock className="w-3 h-3 text-[#a1a1aa]" />
               <span>{currentTime}</span>
             </div>
 
@@ -210,13 +210,13 @@ export default function Navbar({
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setIsShiftOpen(true)}
-                  className="px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 shadow-xs rounded text-left transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-white hover:bg-[#fbfbf5] border border-[#e4e4e7] shadow-xs rounded-full text-left transition-colors cursor-pointer"
                 >
-                  <div className="text-[11px] font-mono text-slate-700 flex items-center gap-1">
-                    <span className="text-slate-400 font-sans text-[10px] uppercase font-bold">
+                  <div className="text-[11px] font-mono text-[#52525b] flex items-center gap-1">
+                    <span className="text-[#a1a1aa] font-sans text-[10px] uppercase font-bold">
                       Staff:
                     </span>
-                    <span className="font-bold uppercase text-slate-900">
+                    <span className="font-bold uppercase text-black">
                       {currentUser.username}
                     </span>
                   </div>
@@ -225,7 +225,7 @@ export default function Navbar({
                 <button
                   onClick={logout}
                   title="Sign Out"
-                  className="p-1.5 rounded bg-white hover:bg-slate-50 text-slate-400 hover:text-rose-600 border border-slate-200 shadow-xs transition-colors cursor-pointer"
+                  className="p-2 rounded-full bg-white hover:bg-[#fbfbf5] text-[#71717a] hover:text-rose-600 border border-[#e4e4e7] shadow-xs transition-colors cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -233,7 +233,7 @@ export default function Navbar({
             ) : (
               <button
                 onClick={() => setIsLoginOpen(true)}
-                className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white border border-slate-900 text-xs font-semibold rounded shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="btn-primary-pill px-4 py-1.5 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Sign In</span>

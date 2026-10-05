@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { TrendingUp, ArrowUpRight, Calendar } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { HourlySalesPoint, HOURLY_SALES_DATA } from "@/data/analytics";
 import { formatNaira } from "@/utils/formatters";
 
@@ -12,7 +12,6 @@ export default function SalesVelocityChart() {
 
   const data = HOURLY_SALES_DATA;
   const maxRevenue = Math.max(...data.map((d) => d.revenue));
-  const minRevenue = 0;
 
   // Chart dimensions
   const width = 640;
@@ -52,38 +51,38 @@ export default function SalesVelocityChart() {
   const totalVolume = data.reduce((sum, d) => sum + d.revenue, 0);
 
   return (
-    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+    <div className="bg-white border border-[#e4e4e7] rounded-xl p-6 card-stack-shadow flex flex-col justify-between">
       {/* Chart Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#a1a1aa] font-semibold">
               Real-time Sales Velocity
             </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="tag-mint text-[10px] px-2 py-0.5">
               <TrendingUp className="w-2.5 h-2.5" /> +12.8% vs yesterday
             </span>
           </div>
           <div className="flex items-baseline gap-2 mt-1">
-            <h3 className="text-2xl font-bold font-mono text-slate-900 tracking-tight">
+            <h3 className="text-2xl font-light font-mono text-black tracking-tight">
               {formatNaira(totalVolume)}
             </h3>
-            <span className="text-xs text-slate-500 font-sans">
+            <span className="text-xs text-[#71717a] font-sans">
               accumulated today across 4 active registers
             </span>
           </div>
         </div>
 
-        {/* Time Filter Pills */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200/80 font-sans text-xs">
+        {/* Time Filter Pills - STRICT PILLS */}
+        <div className="flex items-center bg-[#fbfbf5] p-1 rounded-full border border-[#e4e4e7] font-sans text-xs">
           {(["today", "week", "month"] as const).map((r) => (
             <button
               key={r}
               onClick={() => setTimeRange(r)}
-              className={`px-3 py-1 rounded-md text-xs font-semibold capitalize transition-all cursor-pointer ${
+              className={`px-3.5 py-1 rounded-full text-xs transition-all cursor-pointer ${
                 timeRange === r
-                  ? "bg-white text-slate-900 shadow-2xs font-bold"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "bg-black text-white font-semibold shadow-xs"
+                  : "text-[#71717a] hover:text-black font-medium"
               }`}
             >
               {r === "today" ? "Today" : r === "week" ? "Last 7 Days" : "Last 30 Days"}
@@ -104,8 +103,8 @@ export default function SalesVelocityChart() {
         >
           <defs>
             <linearGradient id="velocityGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#059669" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#c1fbd4" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#c1fbd4" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -119,7 +118,7 @@ export default function SalesVelocityChart() {
                   y1={y}
                   x2={width - paddingX}
                   y2={y}
-                  stroke="#f1f5f9"
+                  stroke="#e4e4e7"
                   strokeWidth="1"
                   strokeDasharray="4 4"
                 />
@@ -127,7 +126,7 @@ export default function SalesVelocityChart() {
                   x={paddingX - 6}
                   y={y + 3}
                   textAnchor="end"
-                  className="text-[9px] fill-slate-400 font-mono"
+                  className="text-[9px] fill-[#a1a1aa] font-mono"
                 >
                   ₦{Math.round((maxRevenue * ratio) / 1000)}k
                 </text>
@@ -142,8 +141,8 @@ export default function SalesVelocityChart() {
           <path
             d={pathD}
             fill="none"
-            stroke="#059669"
-            strokeWidth="2.5"
+            stroke="#000000"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -158,9 +157,9 @@ export default function SalesVelocityChart() {
                   cx={p.x}
                   cy={p.y}
                   r={isHovered ? 5 : 2.5}
-                  fill={isHovered ? "#059669" : "#ffffff"}
-                  stroke="#059669"
-                  strokeWidth={isHovered ? 2.5 : 2}
+                  fill={isHovered ? "#000000" : "#ffffff"}
+                  stroke="#000000"
+                  strokeWidth={isHovered ? 2 : 1.5}
                   className="transition-all duration-150"
                 />
 
@@ -171,7 +170,7 @@ export default function SalesVelocityChart() {
                     y1={paddingY}
                     x2={p.x}
                     y2={height - paddingY}
-                    stroke="#94a3b8"
+                    stroke="#a1a1aa"
                     strokeWidth="1"
                     strokeDasharray="3 3"
                   />
@@ -203,7 +202,7 @@ export default function SalesVelocityChart() {
                 x={getX(i)}
                 y={height - 6}
                 textAnchor="middle"
-                className="text-[9px] fill-slate-400 font-mono"
+                className="text-[9px] fill-[#71717a] font-mono"
               >
                 {d.hour}
               </text>
@@ -220,14 +219,14 @@ export default function SalesVelocityChart() {
               top: `${(points[hoveredIndex].y / height) * 100}%`,
             }}
           >
-            <div className="bg-slate-900 text-white px-2.5 py-1.5 rounded-lg shadow-xl text-xs font-mono whitespace-nowrap">
-              <div className="text-[10px] text-slate-400 uppercase font-sans font-medium">
+            <div className="bg-black text-white px-3 py-2 rounded-xl shadow-xl text-xs font-mono whitespace-nowrap border border-[#3f3f46]">
+              <div className="text-[10px] text-[#a1a1aa] uppercase font-sans font-medium">
                 {hoveredPoint.hour} Window
               </div>
-              <div className="font-bold text-emerald-400 text-xs">
+              <div className="font-bold text-[#c1fbd4] text-xs">
                 {formatNaira(hoveredPoint.revenue)}
               </div>
-              <div className="text-[10px] text-slate-300 font-sans">
+              <div className="text-[10px] text-white font-sans">
                 {hoveredPoint.transactions} receipts generated
               </div>
             </div>

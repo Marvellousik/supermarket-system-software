@@ -29,45 +29,47 @@ export default function ShiftModal({ isOpen, onClose }: ShiftModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 font-sans text-slate-800">
-      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-sm overflow-hidden shadow-2xl">
-        <div className="px-5 py-3.5 border-b border-slate-200 bg-slate-50 flex items-center justify-between font-mono text-xs">
-          <div className="flex items-center gap-1.5">
-            <Clock className="w-4 h-4 text-emerald-600" />
-            <span className="font-bold text-slate-800 uppercase tracking-wider">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 font-sans text-black">
+      <div className="bg-white border border-[#e4e4e7] rounded-2xl w-full max-w-sm overflow-hidden card-stack-shadow">
+        <div className="px-6 py-4 border-b border-[#e4e4e7] bg-[#fbfbf5] flex items-center justify-between font-mono text-xs">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-[#c1fbd4] text-black flex items-center justify-center">
+              <Clock className="w-3.5 h-3.5" />
+            </div>
+            <span className="font-bold text-black uppercase tracking-wider">
               Terminal Shift Control
             </span>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 font-mono text-xs"
+            className="text-[#71717a] hover:text-black p-1.5 rounded-full hover:bg-[#f4f4f5] transition-colors cursor-pointer"
           >
-            [X]
+            ✕
           </button>
         </div>
 
-        <div className="p-5 space-y-3.5 font-mono text-xs">
-          <div className="bg-slate-50 border border-slate-200 p-3 rounded text-xs space-y-1">
-            <div className="text-[10px] text-slate-500 uppercase font-semibold">Current Session:</div>
-            <div className="text-slate-900 font-bold uppercase">
+        <div className="p-6 space-y-4 font-mono text-xs">
+          <div className="bg-[#fbfbf5] border border-[#e4e4e7] p-3.5 rounded-xl text-xs space-y-1">
+            <div className="text-[10px] text-[#71717a] uppercase font-semibold">Current Session:</div>
+            <div className="text-black font-bold uppercase">
               {currentUser?.username || "Guest"} ({currentUser?.role})
             </div>
             {activeShift && (
-              <div className="text-[11px] text-emerald-700 font-medium">
+              <div className="text-[11px] text-emerald-900 font-medium">
                 Operating Machine 0{activeShift.machineId} since{" "}
                 {new Date(activeShift.startTime).toLocaleTimeString()}
               </div>
             )}
           </div>
 
-          <div className="space-y-1">
-            <label className="text-[11px] text-slate-600 uppercase font-semibold">
+          <div className="space-y-1.5">
+            <label className="text-[11px] text-[#52525b] uppercase font-semibold block font-sans">
               Switch Terminal Station:
             </label>
             <select
               value={selectedMachine}
               onChange={(e) => setSelectedMachine(Number(e.target.value))}
-              className="w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 p-2 rounded text-slate-900 text-xs focus:outline-none font-mono"
+              className="w-full bg-white border border-[#e4e4e7] focus:border-black p-2 rounded-md text-black text-xs focus:outline-none font-mono transition-colors"
             >
               {machines.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -77,10 +79,10 @@ export default function ShiftModal({ isOpen, onClose }: ShiftModalProps) {
             </select>
           </div>
 
-          <div className="pt-2 flex flex-col gap-2 font-sans">
+          <div className="pt-3 flex flex-col gap-2.5 font-sans">
             <button
               onClick={handleUpdateShift}
-              className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold transition-colors shadow-sm flex items-center justify-center gap-1.5"
+              className="btn-primary-pill w-full py-2.5 text-xs flex items-center justify-center gap-1.5"
             >
               <Check className="w-3.5 h-3.5" />
               <span>Confirm Terminal Assignment</span>
@@ -89,7 +91,7 @@ export default function ShiftModal({ isOpen, onClose }: ShiftModalProps) {
             {activeShift && (
               <button
                 onClick={handleEndShift}
-                className="w-full py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 font-mono"
+                className="btn-outline-light w-full py-2.5 text-xs text-rose-700 border-rose-200 hover:bg-rose-50 flex items-center justify-center gap-1.5"
               >
                 <PowerOff className="w-3.5 h-3.5" />
                 <span>Close Active Shift</span>

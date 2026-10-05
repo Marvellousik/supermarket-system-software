@@ -58,27 +58,27 @@ export default function OrderDetailDrawer({
   return (
     <div className="fixed inset-0 z-50 overflow-hidden font-sans">
       <div
-        className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-lg bg-white border-l border-slate-200 shadow-2xl flex flex-col h-full">
+        <div className="w-screen max-w-lg bg-[#fbfbf5] border-l border-[#e4e4e7] card-stack-shadow shadow-2xl flex flex-col h-full">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <div className="px-6 py-4 border-b border-[#e4e4e7] bg-white flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-sm font-bold font-mono text-slate-900 shrink-0">
+              <span className="text-sm font-bold font-mono text-black shrink-0">
                 {order.orderNumber}
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#c1fbd4] text-black border border-[#a8f5c2] shrink-0">
                 {order.paymentStatus}
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#e4e4e7] text-black border border-[#d4d4d8] shrink-0">
                 {order.orderStatus}
               </span>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0 ml-2"
+              className="text-[#71717a] hover:text-black p-2 rounded-full hover:bg-[#fbfbf5] transition-colors cursor-pointer shrink-0 ml-2"
             >
               <X className="w-4 h-4" />
             </button>
@@ -87,20 +87,20 @@ export default function OrderDetailDrawer({
           {/* Dossier Body */}
           <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
             {/* Amount Banner */}
-            <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-xl flex items-baseline justify-between font-mono">
+            <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow flex items-baseline justify-between font-mono">
               <div className="min-w-0 flex-1 mr-3">
-                <span className="text-[10px] uppercase text-slate-400 font-semibold block font-sans">
+                <span className="text-[10px] uppercase tracking-wider text-[#71717a] font-semibold block font-sans">
                   Total Settlement Amount
                 </span>
-                <span className="text-2xl font-bold text-slate-900 truncate block">
+                <span className="text-3xl font-medium text-black truncate block mt-1 tracking-tight">
                   {formatNaira(order.total)}
                 </span>
               </div>
               <div className="text-right shrink-0">
-                <span className="text-[10px] uppercase text-slate-400 font-semibold block font-sans">
+                <span className="text-[10px] uppercase tracking-wider text-[#71717a] font-semibold block font-sans">
                   Payment Method
                 </span>
-                <span className="text-xs font-bold uppercase text-emerald-700">
+                <span className="inline-block mt-1 text-xs font-semibold uppercase px-2.5 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2]">
                   {order.paymentMethod}
                 </span>
               </div>
@@ -108,53 +108,53 @@ export default function OrderDetailDrawer({
 
             {/* Audit Metadata Grid */}
             <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-              <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-1 min-w-0">
-                <div className="text-[10px] text-slate-400 font-sans uppercase font-bold flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-slate-400 shrink-0" /> Date & Time
+              <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow space-y-1 min-w-0">
+                <div className="text-[10px] text-[#71717a] font-sans uppercase font-semibold tracking-wider flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#a1a1aa] shrink-0" /> Date & Time
                 </div>
-                <div className="font-bold text-slate-800 truncate">{order.date}</div>
-                <div className="text-[11px] text-slate-500 truncate">{order.time}</div>
+                <div className="font-semibold text-black truncate mt-1">{order.date}</div>
+                <div className="text-[11px] text-[#71717a] truncate">{order.time}</div>
               </div>
 
-              <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-1 min-w-0">
-                <div className="text-[10px] text-slate-400 font-sans uppercase font-bold flex items-center gap-1">
-                  <Monitor className="w-3 h-3 text-slate-400 shrink-0" /> Terminal Station
+              <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow space-y-1 min-w-0">
+                <div className="text-[10px] text-[#71717a] font-sans uppercase font-semibold tracking-wider flex items-center gap-1.5">
+                  <Monitor className="w-3.5 h-3.5 text-[#a1a1aa] shrink-0" /> Terminal Station
                 </div>
-                <div className="font-bold text-emerald-700 truncate">Machine 0{order.terminalId}</div>
-                <div className="text-[11px] text-slate-500 truncate">Till Operator: {order.cashierName}</div>
+                <div className="font-semibold text-black truncate mt-1">Machine 0{order.terminalId}</div>
+                <div className="text-[11px] text-[#71717a] truncate">Till Operator: {order.cashierName}</div>
               </div>
             </div>
 
             {/* Customer Information */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs space-y-1 min-w-0">
-              <div className="text-[10px] font-mono text-slate-400 uppercase font-bold">
+            <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow text-xs space-y-1 min-w-0">
+              <div className="text-[10px] font-mono text-[#71717a] uppercase tracking-wider font-semibold">
                 Customer Account
               </div>
-              <div className="font-bold text-slate-900 truncate">{order.customerName}</div>
+              <div className="font-semibold text-black truncate text-sm">{order.customerName}</div>
               {order.customerPhone && (
-                <div className="text-[11px] font-mono text-slate-500 truncate">{order.customerPhone}</div>
+                <div className="text-[11px] font-mono text-[#71717a] truncate">{order.customerPhone}</div>
               )}
             </div>
 
             {/* Itemized Line Items Table */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-mono text-slate-400 uppercase font-bold">
+              <div className="flex items-center justify-between text-xs font-mono text-[#71717a] uppercase tracking-wider font-semibold px-1">
                 <span>Itemized Cart List ({order.items.length} Lines)</span>
                 <span>Subtotal</span>
               </div>
 
-              <div className="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-100 bg-white">
+              <div className="border border-[#e4e4e7] rounded-xl overflow-hidden divide-y divide-[#e4e4e7] bg-white card-stack-shadow">
                 {order.items.map((item, idx) => (
-                  <div key={idx} className="p-3 flex items-center justify-between text-xs hover:bg-slate-50 gap-3">
+                  <div key={idx} className="p-3.5 flex items-center justify-between text-xs hover:bg-[#fbfbf5] gap-3 transition-colors">
                     <div className="pr-3 min-w-0 flex-1">
-                      <div className="font-semibold text-slate-900 leading-tight truncate">
+                      <div className="font-medium text-black leading-tight truncate">
                         {item.name}
                       </div>
-                      <div className="text-[11px] font-mono text-slate-400 mt-0.5 truncate">
+                      <div className="text-[11px] font-mono text-[#a1a1aa] mt-0.5 truncate">
                         {item.quantity} × {formatNaira(item.price)}
                       </div>
                     </div>
-                    <div className="font-mono font-bold text-slate-900 shrink-0 text-right">
+                    <div className="font-mono font-bold text-black shrink-0 text-right tabular-nums">
                       {formatNaira(item.total)}
                     </div>
                   </div>
@@ -163,42 +163,42 @@ export default function OrderDetailDrawer({
             </div>
 
             {/* Totals Breakdown */}
-            <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2 text-xs font-mono">
-              <div className="flex justify-between text-slate-600">
+            <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow space-y-2.5 text-xs font-mono">
+              <div className="flex justify-between text-[#52525b]">
                 <span>Subtotal Ext:</span>
-                <span className="font-semibold text-slate-900">{formatNaira(order.subtotal)}</span>
+                <span className="font-semibold text-black tabular-nums">{formatNaira(order.subtotal)}</span>
               </div>
               {order.tax > 0 && (
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-[#52525b]">
                   <span>VAT (7.5%):</span>
-                  <span>{formatNaira(order.tax)}</span>
+                  <span className="tabular-nums">{formatNaira(order.tax)}</span>
                 </div>
               )}
               {order.discount > 0 && (
-                <div className="flex justify-between text-emerald-600 font-semibold">
+                <div className="flex justify-between text-black font-semibold">
                   <span>Discount Applied:</span>
-                  <span>-{formatNaira(order.discount)}</span>
+                  <span className="tabular-nums">-{formatNaira(order.discount)}</span>
                 </div>
               )}
-              <div className="pt-2 border-t border-slate-200 flex justify-between font-bold text-sm text-slate-900">
+              <div className="pt-3 border-t border-[#e4e4e7] flex justify-between font-bold text-sm text-black">
                 <span>Settled Total:</span>
-                <span className="text-emerald-700">{formatNaira(order.total)}</span>
+                <span className="text-black text-base tabular-nums">{formatNaira(order.total)}</span>
               </div>
             </div>
           </div>
 
-          {/* Footer Actions */}
-          <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center gap-3 shrink-0">
+          {/* Footer Actions - Strict DESIGN.md Pill Vocabulary */}
+          <div className="p-4 bg-white border-t border-[#e4e4e7] flex items-center gap-3 shrink-0">
             <button
               onClick={handleDownloadPDF}
-              className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer btn-tactile"
+              className="btn-aloe-pill flex-1 py-2.5 text-xs font-semibold shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 shrink-0" />
               <span>Download Receipt PDF</span>
             </button>
             <button
               onClick={handlePrint}
-              className="px-4 py-2.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="btn-primary-pill px-5 py-2.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs"
             >
               <Printer className="w-3.5 h-3.5 shrink-0" />
               <span>Print</span>

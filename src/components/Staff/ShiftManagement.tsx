@@ -33,56 +33,58 @@ export default function ShiftManagement({
   return (
     <div className="mb-6 font-mono text-xs">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-black">
           Shift Audit Logs ({shifts.length} Records)
         </h3>
-        <span className="text-[11px] text-slate-500">
+        <span className="text-[11px] text-[#71717a]">
           Terminal shift tracking
         </span>
       </div>
 
-      <div className="grid grid-cols-4 p-2.5 bg-slate-100 text-[11px] uppercase tracking-wider text-slate-600 font-bold border-b border-slate-200 rounded-t-lg">
-        <div>Terminal</div>
-        <div>Cashier</div>
-        <div>Shift Start</div>
-        <div>Shift End</div>
-      </div>
+      <div className="bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow overflow-hidden">
+        <div className="grid grid-cols-4 p-3 bg-[#fbfbf5] text-[10px] uppercase tracking-wider text-[#71717a] font-semibold border-b border-[#e4e4e7]">
+          <div>Terminal</div>
+          <div>Cashier</div>
+          <div>Shift Start</div>
+          <div>Shift End</div>
+        </div>
 
-      {shifts.length === 0 ? (
-        <div className="text-center py-8 text-slate-400 bg-white border border-slate-200 rounded-b-lg">
-          No shifts logged yet.
-        </div>
-      ) : (
-        <div className="divide-y divide-slate-200 border-x border-b border-slate-200 rounded-b-lg overflow-hidden bg-white shadow-sm">
-          {shifts.map((shift) => (
-            <div
-              key={shift.id}
-              className="grid grid-cols-4 items-center text-xs p-2.5 bg-white hover:bg-slate-50 transition-colors"
-            >
-              <div>
-                <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                  {getMachineLabel(shift.machineId)}
-                </span>
-              </div>
-              <div className="font-semibold text-slate-800 uppercase">{getCashierName(shift.cashierId)}</div>
-              <div className="text-[11px] text-slate-500">
-                {formatDateTime(shift.startTime)}
-              </div>
-              <div>
-                {shift.endTime ? (
-                  <span className="text-[11px] text-slate-500">
-                    {formatDateTime(shift.endTime)}
+        {shifts.length === 0 ? (
+          <div className="text-center py-10 text-[#a1a1aa] bg-white">
+            No shifts logged yet.
+          </div>
+        ) : (
+          <div className="divide-y divide-[#e4e4e7] bg-white">
+            {shifts.map((shift) => (
+              <div
+                key={shift.id}
+                className="grid grid-cols-4 items-center text-xs p-3 hover:bg-[#fbfbf5] transition-colors"
+              >
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#c1fbd4] text-black border border-[#a8f5c2]">
+                    {getMachineLabel(shift.machineId)}
                   </span>
-                ) : (
-                  <span className="px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-[10px] text-emerald-700 font-bold">
-                    ACTIVE
-                  </span>
-                )}
+                </div>
+                <div className="font-semibold text-black uppercase">{getCashierName(shift.cashierId)}</div>
+                <div className="text-[11px] text-[#71717a]">
+                  {formatDateTime(shift.startTime)}
+                </div>
+                <div>
+                  {shift.endTime ? (
+                    <span className="text-[11px] text-[#71717a]">
+                      {formatDateTime(shift.endTime)}
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#c1fbd4] border border-[#a8f5c2] text-[10px] text-black font-bold">
+                      ACTIVE
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
