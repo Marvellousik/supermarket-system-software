@@ -97,9 +97,9 @@ export default function AppShell({
       case "pos":
         return { title: "Point of Sale Register", subtitle: "High-speed barcode scanner & receipt printer" };
       case "inventory":
-        return { title: "Inventory Stock Control", subtitle: "SKU balances, health index & reorder thresholds" };
+        return { title: "Inventory Stock Control", subtitle: "Product balances, stock valuation & inventory levels" };
       case "products":
-        return { title: "Products Master Registry", subtitle: "150 Household goods, EAN-13 barcodes & pricing" };
+        return { title: "Products Master Catalog", subtitle: "150 Household goods, EAN-13 barcodes & pricing in Naira (₦)" };
       case "orders":
         return { title: "Sales & Order Settlement", subtitle: "Reconciled receipt ledger & reprints" };
       case "suppliers":
@@ -129,7 +129,7 @@ export default function AppShell({
             </div>
             <div className="min-w-0">
               <div className="font-semibold text-sm tracking-tight text-black flex items-center gap-1.5">
-                <span className="truncate">APEX RETAIL</span>
+                <span className="truncate">NEIL SUPERMARKET SOFTWARE</span>
                 <span className="text-[10px] font-mono font-medium bg-[#fbfbf5] text-[#52525b] px-2 py-0.5 rounded-full border border-[#e4e4e7] shrink-0">
                   OPS
                 </span>
@@ -263,7 +263,7 @@ export default function AppShell({
           <div className="fixed inset-y-0 left-0 max-w-full flex">
             <div className="w-72 bg-white border-r border-[#e4e4e7] shadow-2xl flex flex-col p-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#e4e4e7]">
-                <div className="font-semibold text-sm text-black tracking-tight">APEX RETAIL</div>
+                <div className="font-semibold text-sm text-black tracking-tight truncate">NEIL SUPERMARKET SOFTWARE</div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-1 rounded-full text-[#71717a] hover:text-black cursor-pointer"
@@ -402,7 +402,7 @@ export default function AppShell({
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="text-black font-semibold tracking-tight">
-                SHOPPING CENTER SUPERMARKET
+                NEIL SUPERMARKET SOFTWARE
               </span>
               <span className="text-[#e4e4e7]">|</span>
               <span>SQLITE EMBEDDED ENGINE</span>

@@ -585,11 +585,11 @@ export default function POSCheckout({
             </div>
 
             {/* Total Due Callout Box - DESIGN.md Dark Elevated Panel */}
-            <div className="bg-black text-white p-5 rounded-xl card-dark-sheen">
-              <div className="text-xs font-normal text-[#a1a1aa] uppercase tracking-widest font-sans">
+            <div className="bg-black text-white p-5 rounded-xl card-dark-sheen min-w-0 overflow-hidden">
+              <div className="text-xs font-normal text-[#a1a1aa] uppercase tracking-widest font-sans truncate">
                 Total Amount Due (NGN)
               </div>
-              <div className="text-3xl sm:text-4xl font-light text-[#c1fbd4] tracking-tight tabular-nums mt-1 font-mono">
+              <div className="text-2xl sm:text-3xl font-light text-[#c1fbd4] tracking-tight tabular-nums mt-1 font-mono truncate block" title={formatNaira(totalAmount)}>
                 {formatNaira(totalAmount)}
               </div>
             </div>
@@ -599,10 +599,10 @@ export default function POSCheckout({
               type="button"
               onClick={handleOpenPayment}
               disabled={cart.length === 0}
-              className="btn-aloe-pill w-full py-3.5 text-sm font-semibold shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-30"
+              className="btn-aloe-pill w-full py-3.5 text-sm font-semibold shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-30 min-w-0"
             >
-              <CreditCard className="w-4 h-4" />
-              <span>Charge {formatNaira(totalAmount)}</span>
+              <CreditCard className="w-4 h-4 shrink-0" />
+              <span className="truncate">Charge {formatNaira(totalAmount)}</span>
             </button>
           </div>
 

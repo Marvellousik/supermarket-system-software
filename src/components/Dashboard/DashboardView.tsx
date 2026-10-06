@@ -88,7 +88,7 @@ export default function DashboardView({
             className="btn-aloe-pill px-5 py-2.5 shadow-xs font-semibold"
           >
             <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>Launch POS Register</span>
+            <span>Launch POS Till</span>
           </button>
 
           {onOpenNewProductModal && (
@@ -111,56 +111,56 @@ export default function DashboardView({
         </div>
       </div>
 
-      {/* Athletic Performance Metric Cards Grid - Level 3 Stacked Micro-Shadows */}
+      {/* Athletic Performance Metric Cards Grid - Level 3 Stacked Micro-Shadows with Strict Containment */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Metric 1: Revenue */}
-        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all">
-          <div>
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className="flex items-center justify-between text-xs font-medium text-[#71717a]">
-              <span className="uppercase tracking-wider">Gross Revenue</span>
-              <span className="tag-mint text-[10px] px-2 py-0.5">
+              <span className="uppercase tracking-wider truncate">Gross Revenue</span>
+              <span className="tag-mint text-[10px] px-2 py-0.5 shrink-0">
                 <TrendingUp className="w-2.5 h-2.5" /> +12.8%
               </span>
             </div>
-            <div className="mt-2.5 text-3xl sm:text-4xl font-light tracking-tight tabular-nums text-black">
+            <div className="mt-2.5 text-2xl sm:text-3xl font-light tracking-tight tabular-nums text-black truncate" title={formatNaira(displayRevenue)}>
               {formatNaira(displayRevenue)}
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans">
+          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans truncate">
             <span>Avg Basket: <strong className="text-black font-mono">₦22,140</strong></span>
             <span className="text-[#a1a1aa] font-mono text-[10px]">vs ₦2.52M LW</span>
           </div>
         </div>
 
         {/* Metric 2: Orders */}
-        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all">
-          <div>
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className="flex items-center justify-between text-xs font-medium text-[#71717a]">
-              <span className="uppercase tracking-wider">Settled Orders</span>
-              <span className="tag-mint text-[10px] px-2 py-0.5">
+              <span className="uppercase tracking-wider truncate">Settled Orders</span>
+              <span className="tag-mint text-[10px] px-2 py-0.5 shrink-0">
                 <TrendingUp className="w-2.5 h-2.5" /> +8.4%
               </span>
             </div>
-            <div className="mt-2.5 text-3xl sm:text-4xl font-light tracking-tight tabular-nums text-black">
+            <div className="mt-2.5 text-2xl sm:text-3xl font-light tracking-tight tabular-nums text-black truncate">
               {totalOrders.toLocaleString()}
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans">
+          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans truncate">
             <span>Checkout Speed: <strong className="text-black font-mono">42s</strong></span>
             <span className="text-[#a1a1aa] font-mono text-[10px]">100% digital receipts</span>
           </div>
         </div>
 
         {/* Metric 3: Stock Health */}
-        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all">
-          <div>
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className="flex items-center justify-between text-xs font-medium text-[#71717a]">
-              <span className="uppercase tracking-wider">Stock Health Index</span>
-              <span className="tag-shade text-[10px] px-2 py-0.5">
+              <span className="uppercase tracking-wider truncate">Stock Health Index</span>
+              <span className="tag-shade text-[10px] px-2 py-0.5 shrink-0 text-black">
                 {lowStockItems.length} Low
               </span>
             </div>
-            <div className="mt-2.5 text-3xl sm:text-4xl font-light tracking-tight tabular-nums text-black">
+            <div className="mt-2.5 text-2xl sm:text-3xl font-light tracking-tight tabular-nums text-black truncate">
               {stockHealthRate}%
             </div>
           </div>
@@ -171,27 +171,27 @@ export default function DashboardView({
                 style={{ width: `${stockHealthRate}%` }}
               />
             </div>
-            <div className="flex justify-between text-[11px] text-[#71717a] font-sans">
-              <span>{products.length} registered SKUs</span>
+            <div className="flex justify-between text-[11px] text-[#71717a] font-sans truncate">
+              <span>{products.length} Products</span>
               <span className="text-[#a1a1aa]">{outOfStockItems.length} out of stock</span>
             </div>
           </div>
         </div>
 
         {/* Metric 4: Active Fleet */}
-        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all">
-          <div>
+        <div className="bg-white border border-[#e4e4e7] rounded-xl p-5 card-stack-shadow flex flex-col justify-between hover:border-[#d4d4d8] transition-all min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className="flex items-center justify-between text-xs font-medium text-[#71717a]">
-              <span className="uppercase tracking-wider">Register Till Fleet</span>
-              <span className="tag-mint text-[10px] px-2 py-0.5">
+              <span className="uppercase tracking-wider truncate">Active Till Fleet</span>
+              <span className="tag-mint text-[10px] px-2 py-0.5 shrink-0">
                 4 Active
               </span>
             </div>
-            <div className="mt-2.5 text-3xl sm:text-4xl font-light tracking-tight tabular-nums text-black">
+            <div className="mt-2.5 text-2xl sm:text-3xl font-light tracking-tight tabular-nums text-black truncate">
               4 / 4 Tills
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans">
+          <div className="mt-4 pt-3 border-t border-[#e4e4e7] flex items-center justify-between text-[11px] text-[#71717a] font-sans truncate">
             <span>Uptime: <strong className="text-black font-mono">99.98%</strong></span>
             <span className="text-black font-medium font-mono cursor-pointer hover:underline" onClick={() => onNavigate("staff")}>
               Manage fleet →

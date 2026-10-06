@@ -102,19 +102,19 @@ export default function ReceiptsHistory({ receipts: initialReceipts }: ReceiptsH
           <div
             key={st.machineId}
             onClick={() => setSelectedMachineFilter(st.machineId.toString())}
-            className={`p-4 rounded-xl border cursor-pointer transition-all ${
+            className={`p-4 rounded-xl border cursor-pointer transition-all min-w-0 overflow-hidden ${
               selectedMachineFilter === st.machineId.toString()
                 ? "bg-[#c1fbd4]/30 border-2 border-black card-stack-shadow"
                 : "bg-white border-[#e4e4e7] card-stack-shadow hover:border-[#a1a1aa]"
             }`}
           >
-            <div className="flex justify-between items-center text-[11px] font-mono text-[#71717a] mb-1.5">
-              <span className="font-semibold text-black">Terminal 0{st.machineId}</span>
-              <span className="text-[10px] bg-[#fbfbf5] border border-[#e4e4e7] px-2 py-0.5 rounded-full text-[#52525b] font-sans font-medium">
+            <div className="flex justify-between items-center text-[11px] font-mono text-[#71717a] mb-1.5 truncate">
+              <span className="font-semibold text-black truncate">Terminal 0{st.machineId}</span>
+              <span className="text-[10px] bg-[#fbfbf5] border border-[#e4e4e7] px-2 py-0.5 rounded-full text-[#52525b] font-sans font-medium shrink-0 ml-1">
                 {st.count} Logs
               </span>
             </div>
-            <div className="text-lg font-mono font-medium text-black tabular-nums">
+            <div className="text-lg font-mono font-medium text-black tabular-nums truncate" title={formatNaira(st.revenue)}>
               {formatNaira(st.revenue)}
             </div>
           </div>

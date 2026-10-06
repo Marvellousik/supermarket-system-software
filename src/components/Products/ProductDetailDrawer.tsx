@@ -273,7 +273,7 @@ export default function ProductDetailDrawer({
                 className="btn-aloe-pill flex-1 py-2.5 text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-                <span>Load into Active POS Till</span>
+                <span>Add to Cart</span>
               </button>
             )}
             <button

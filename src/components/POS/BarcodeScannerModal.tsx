@@ -208,7 +208,7 @@ export default function BarcodeScannerModal({
                 <p className="font-semibold truncate">{scanStatus}</p>
                 {lastScannedProduct && (
                   <p className="text-[11px] text-[#52525b] mt-0.5 truncate">
-                    Price: <span className="font-bold text-black">{formatNaira(lastScannedProduct.price)}</span> | SKU: {lastScannedProduct.code}
+                    Price: <span className="font-bold text-black">{formatNaira(lastScannedProduct.price)}</span> | Code: {lastScannedProduct.code}
                   </p>
                 )}
               </div>
@@ -221,7 +221,7 @@ export default function BarcodeScannerModal({
               type="text"
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
-              placeholder="Enter barcode or SKU (e.g. 89010001023 or HH-1023)"
+              placeholder="Enter barcode or item code (e.g. 89010001023 or HH-1023)"
               className="flex-1 min-w-0 bg-white border border-[#e4e4e7] rounded-md px-3.5 py-2.5 text-black placeholder-[#a1a1aa] focus:outline-none focus:border-black"
               autoFocus
             />

@@ -61,8 +61,8 @@ export function buildClientReceiptPDF(receipt: Receipt): jsPDF {
   doc.setProperties({
     title: `Receipt-${receipt.receiptNumber}`,
     subject: "Supermarket Sales Receipt",
-    author: "Shopping Center POS",
-    creator: "Shopping Center Supermarket POS",
+    author: "Neil Supermarket Software",
+    creator: "Neil Supermarket Software POS",
   });
 
   const pageWidth = 80;
@@ -71,13 +71,13 @@ export function buildClientReceiptPDF(receipt: Receipt): jsPDF {
 
   // Header
   doc.setFont("courier", "bold");
-  doc.setFontSize(12);
-  doc.text("SHOPPING CENTER", pageWidth / 2, y, { align: "center" });
+  doc.setFontSize(11);
+  doc.text("NEIL SUPERMARKET SOFTWARE", pageWidth / 2, y, { align: "center" });
   y += 5;
 
   doc.setFontSize(8);
   doc.setFont("courier", "normal");
-  doc.text("SUPERMARKET & RETAIL STORE", pageWidth / 2, y, { align: "center" });
+  doc.text("POINT OF SALE & RETAIL SYSTEM", pageWidth / 2, y, { align: "center" });
   y += 4;
   doc.text("14 Adeola Odeku St, Victoria Island", pageWidth / 2, y, {
     align: "center",

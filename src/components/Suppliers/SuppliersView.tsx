@@ -63,32 +63,32 @@ export default function SuppliersView() {
         </div>
       </div>
 
-      {/* Supplier Performance Metrics */}
+      {/* Supplier Performance Metrics - Fully Contained Flex/Grid Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Active Distributors</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">10 Partners</div>
-          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2]">
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Active Distributors</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">10 Partners</div>
+          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2] truncate w-fit">
             100% SLA compliant
           </span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Fulfillment Score</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">98.4%</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">On-time dock arrival</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Fulfillment Score</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">98.4%</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">On-time dock arrival</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Average Lead Time</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">2.1 Days</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Order to delivery</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Average Lead Time</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">2.1 Days</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Order to delivery</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Active Restock POs</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">32 Orders</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">In transit / processing</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Active Restock POs</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">32 Orders</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">In transit / processing</span>
         </div>
       </div>
 

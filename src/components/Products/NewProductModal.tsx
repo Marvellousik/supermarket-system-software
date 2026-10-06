@@ -75,7 +75,7 @@ export default function NewProductModal({
             </div>
             <div className="min-w-0">
               <h3 className="text-sm font-semibold text-black truncate tracking-tight">Add New Inventory Item</h3>
-              <p className="text-[11px] text-[#71717a] font-mono truncate">Create SKU, barcode & supplier link</p>
+              <p className="text-[11px] text-[#71717a] font-mono truncate">Create item code, barcode & supplier link</p>
             </div>
           </div>
           <button

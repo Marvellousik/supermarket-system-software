@@ -178,11 +178,13 @@ h3, .heading-3 {
 /* DESIGN.md Elevation: Level 3 Stacked Micro-Shadows (Paper Halo) */
 .card-stack-shadow {
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.03), 0 4px 4px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  min-width: 0;
 }
 
 /* DESIGN.md Elevation: Level 1 Inset Top Highlight for Dark Surfaces */
 .card-dark-sheen {
   box-shadow: 0 1px 2px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  min-width: 0;
 }
 
 /* DESIGN.md Tags / Chips */

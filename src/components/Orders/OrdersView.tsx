@@ -134,32 +134,40 @@ export default function OrdersView({ receipts }: OrdersViewProps) {
         </div>
       </div>
 
-      {/* KPI Stats */}
+      {/* KPI Stats - Fully Contained Flex/Grid Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Settled Volume</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">{formatNaira(totalRevenue)}</div>
-          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2]">
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Settled Volume</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate" title={formatNaira(totalRevenue)}>
+            {formatNaira(totalRevenue)}
+          </div>
+          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2] truncate w-fit">
             100% reconciled
           </span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Total Receipts</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">{orders.length} Orders</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Across 4 terminals</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Total Receipts</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">
+            {orders.length} Orders
+          </div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Across 4 terminals</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Average Basket</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">{formatNaira(averageTicket)}</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Per checkout</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Average Basket</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate" title={formatNaira(averageTicket)}>
+            {formatNaira(averageTicket)}
+          </div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Per checkout</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Settlement Status</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">100% Paid</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Zero open voids</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Settlement Status</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">
+            100% Paid
+          </div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Zero open voids</span>
         </div>
       </div>
 

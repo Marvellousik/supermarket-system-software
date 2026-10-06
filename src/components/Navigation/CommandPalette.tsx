@@ -59,7 +59,7 @@ export default function CommandPalette({
     { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard, category: "Navigation" },
     { id: "pos", label: "POS Terminal Register (Fast Checkout)", icon: ShoppingCart, category: "Navigation" },
     { id: "inventory", label: "Inventory Stock Control", icon: Boxes, category: "Navigation" },
-    { id: "products", label: "Products Master Registry", icon: Package, category: "Navigation" },
+    { id: "products", label: "Product Catalog", icon: Package, category: "Navigation" },
     { id: "orders", label: "Sales & Orders Ledger", icon: Receipt, category: "Navigation" },
     { id: "suppliers", label: "FMCG Suppliers Directory", icon: Truck, category: "Navigation" },
     { id: "customers", label: "Customer Loyalty Directory", icon: Users, category: "Navigation" },

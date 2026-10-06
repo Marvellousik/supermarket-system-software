@@ -56,7 +56,7 @@ export default function ReceiptModal({
             <div className="text-center pb-4 border-b border-dashed border-[#d4d4d8]">
               <div className="flex items-center justify-center gap-2 font-bold text-sm text-black uppercase tracking-wider mb-1">
                 <Store className="w-4 h-4 text-black" />
-                SHOPPING CENTER SUPERMARKET
+                NEIL SUPERMARKET SOFTWARE
               </div>
               <p className="text-[10px] text-[#71717a]">14 Adeola Odeku St, Victoria Island, Lagos</p>
               <p className="text-[10px] text-[#71717a]">Tel: +234 802 345 6789 | Currency: NGN (₦)</p>

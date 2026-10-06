@@ -34,12 +34,16 @@ export default function InventoryView({
   const [sortBy, setSortBy] = useState<"name" | "price_asc" | "price_desc" | "stock_asc" | "stock_desc">("stock_asc");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Compute inventory KPIs
+  // Compute inventory KPIs in Naira value (₦)
   const totalStockUnits = useMemo(() => products.reduce((sum, p) => sum + p.stock, 0), [products]);
   const totalInventoryValuation = useMemo(() => products.reduce((sum, p) => sum + p.price * p.stock, 0), [products]);
-  const lowStockCount = useMemo(() => products.filter((p) => p.stock > 0 && p.stock <= (p.minThreshold || 15)).length, [products]);
+  const lowStockProducts = useMemo(() => products.filter((p) => p.stock > 0 && p.stock <= (p.minThreshold || 15)), [products]);
+  const lowStockCount = lowStockProducts.length;
+  const lowStockValuation = useMemo(() => lowStockProducts.reduce((sum, p) => sum + p.price * p.stock, 0), [lowStockProducts]);
   const outOfStockCount = useMemo(() => products.filter((p) => p.stock <= 0).length, [products]);
-  const inStockCount = products.length - lowStockCount - outOfStockCount;
+  const inStockProducts = useMemo(() => products.filter((p) => p.stock > (p.minThreshold || 15)), [products]);
+  const inStockCount = inStockProducts.length;
+  const inStockValuation = useMemo(() => inStockProducts.reduce((sum, p) => sum + p.price * p.stock, 0), [inStockProducts]);
 
   // Filtered & Sorted products
   const filteredProducts = useMemo(() => {
@@ -99,7 +103,7 @@ export default function InventoryView({
             Inventory Stock Control
           </h1>
           <p className="text-sm font-normal text-[#52525b] mt-1">
-            Real-time SKU balances, reorder safety thresholds & FMCG distributor tracking
+            Real-time inventory balances, stock valuation in Naira (₦) & FMCG distributor tracking
           </p>
         </div>
 
@@ -117,41 +121,61 @@ export default function InventoryView({
             className="btn-primary-pill px-5 py-2.5 text-xs font-semibold cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Add New SKU</span>
+            <span>Add Product</span>
           </button>
         </div>
       </div>
 
-      {/* KPI Metric Summary Strip - Level 3 Stacked Micro-Shadows */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 text-xs">
-        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-medium text-[#71717a] uppercase tracking-wider block">Total SKU Items</span>
-          <div className="text-2xl sm:text-3xl font-light text-black mt-1 tracking-tight tabular-nums">{products.length} Products</div>
-          <span className="text-[11px] font-normal text-[#71717a]">{totalStockUnits.toLocaleString()} total units</span>
+      {/* KPI Metric Summary Strip - Fully Contained Flex/Grid Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 text-xs">
+        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-[11px] font-medium text-[#71717a] uppercase tracking-wider block truncate">Total Stock Valuation</span>
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-black mt-1 tracking-tight tabular-nums truncate" title={formatNaira(totalInventoryValuation)}>
+            {formatNaira(totalInventoryValuation)}
+          </div>
+          <span className="text-[11px] font-normal text-[#71717a] truncate mt-1 block">
+            {products.length} Products ({totalStockUnits.toLocaleString()} units)
+          </span>
         </div>
 
-        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-medium text-[#71717a] uppercase tracking-wider block">Stock Valuation</span>
-          <div className="text-2xl sm:text-3xl font-light text-black mt-1 tracking-tight tabular-nums">{formatNaira(totalInventoryValuation)}</div>
-          <span className="text-[11px] font-medium text-[#52525b]">Assets on floor</span>
+        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-[11px] font-medium text-[#71717a] uppercase tracking-wider block truncate">In Stock Valuation</span>
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-black mt-1 tracking-tight tabular-nums truncate" title={formatNaira(inStockValuation)}>
+            {formatNaira(inStockValuation)}
+          </div>
+          <span className="text-[11px] font-normal text-[#71717a] truncate mt-1 block">
+            {inStockCount} Items Available
+          </span>
         </div>
 
-        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-medium text-[#71717a] uppercase tracking-wider block">Healthy Stock</span>
-          <div className="text-2xl sm:text-3xl font-light text-black mt-1 tracking-tight tabular-nums">{inStockCount} SKUs</div>
-          <span className="text-[11px] font-normal text-[#71717a]">Above safety levels</span>
+        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-[11px] font-medium text-[#71717a] uppercase tracking-wider block truncate">Low Stock Valuation</span>
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-amber-700 mt-1 tracking-tight tabular-nums truncate" title={formatNaira(lowStockValuation)}>
+            {formatNaira(lowStockValuation)}
+          </div>
+          <span className="text-[11px] font-semibold text-amber-700 truncate mt-1 block">
+            {lowStockCount} Items Low
+          </span>
         </div>
 
-        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-medium text-[#71717a] uppercase tracking-wider block">Low Stock Warning</span>
-          <div className="text-2xl sm:text-3xl font-light text-black mt-1 tracking-tight tabular-nums">{lowStockCount} SKUs</div>
-          <span className="text-[11px] font-semibold text-amber-700">Requires reorder</span>
+        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-[11px] font-medium text-[#71717a] uppercase tracking-wider block truncate">Out of Stock Value</span>
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-rose-600 mt-1 tracking-tight tabular-nums truncate">
+            {outOfStockCount} Items (₦0.00)
+          </div>
+          <span className="text-[11px] font-semibold text-rose-600 truncate mt-1 block">
+            Depleted Shelf Stock
+          </span>
         </div>
 
-        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow col-span-2 sm:col-span-1">
-          <span className="text-xs font-medium text-[#71717a] uppercase tracking-wider block">Out of Stock</span>
-          <div className="text-2xl sm:text-3xl font-light text-rose-600 mt-1 tracking-tight tabular-nums">{outOfStockCount} SKUs</div>
-          <span className="text-[11px] font-semibold text-rose-600">Zero shelf units</span>
+        <div className="p-4 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between col-span-2 md:col-span-1">
+          <span className="text-[11px] font-medium text-[#71717a] uppercase tracking-wider block truncate">Total Stock Units</span>
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-black mt-1 tracking-tight tabular-nums truncate">
+            {totalStockUnits.toLocaleString()} Units
+          </div>
+          <span className="text-[11px] font-medium text-[#52525b] truncate mt-1 block">
+            Across {products.length} Products
+          </span>
         </div>
       </div>
 
@@ -165,7 +189,7 @@ export default function InventoryView({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search product, SKU, barcode, supplier..."
+              placeholder="Search product, code, barcode, supplier..."
               className="w-full bg-[#fbfbf5] border border-[#e4e4e7] focus:bg-white focus:border-black pl-9 pr-3 py-2 rounded-md text-black placeholder-[#a1a1aa] text-xs focus:outline-none transition-colors"
             />
           </div>
@@ -245,9 +269,9 @@ export default function InventoryView({
             <thead className="bg-[#fbfbf5] text-[#71717a] uppercase text-[10px] font-mono border-b border-[#e4e4e7] font-semibold">
               <tr>
                 <th className="py-3 px-4">Product Details</th>
-                <th className="py-3 px-3">SKU</th>
+                <th className="py-3 px-3">Product Code</th>
                 <th className="py-3 px-3">Category</th>
-                <th className="py-3 px-3">Stock Level</th>
+                <th className="py-3 px-3">Stock Available</th>
                 <th className="py-3 px-3">Selling Price</th>
                 <th className="py-3 px-3">Distributor</th>
                 <th className="py-3 px-3">Status</th>
@@ -259,7 +283,6 @@ export default function InventoryView({
                 const minThresh = p.minThreshold || 15;
                 const isOutOfStock = p.stock <= 0;
                 const isLowStock = p.stock > 0 && p.stock <= minThresh;
-                const barPercent = Math.min(100, Math.round((p.stock / (minThresh * 3)) * 100));
 
                 return (
                   <tr
@@ -289,18 +312,13 @@ export default function InventoryView({
                     </td>
 
                     <td className="py-3 px-3 font-mono">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-col">
                         <span className={`font-bold ${isOutOfStock ? "text-rose-600" : isLowStock ? "text-amber-700" : "text-black"}`}>
-                          {p.stock}
+                          {p.stock} <span className="text-[11px] font-normal text-[#71717a]">{p.unit}s</span>
                         </span>
-                        <div className="w-16 h-1.5 bg-[#fbfbf5] border border-[#e4e4e7] rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full ${
-                              isOutOfStock ? "bg-rose-500" : isLowStock ? "bg-amber-500" : "bg-black"
-                            }`}
-                            style={{ width: `${Math.max(8, barPercent)}%` }}
-                          />
-                        </div>
+                        <span className="text-[10px] text-[#71717a] tabular-nums">
+                          Value: {formatNaira(p.stock * p.price)}
+                        </span>
                       </div>
                     </td>
 

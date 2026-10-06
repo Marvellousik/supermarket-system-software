@@ -17,7 +17,7 @@ import { useAuth } from "@/context/AuthContext";
 
 export default function SettingsView() {
   const { soundEnabled, setSoundEnabled } = useAuth();
-  const [storeName, setStoreName] = useState("Shopping Center Supermarket");
+  const [storeName, setStoreName] = useState("Neil Supermarket Software");
   const [storeAddress, setStoreAddress] = useState("14 Adeola Odeku St, Victoria Island, Lagos");
   const [storePhone, setStorePhone] = useState("+234 802 345 6789");
   const [taxRate, setTaxRate] = useState("7.5");

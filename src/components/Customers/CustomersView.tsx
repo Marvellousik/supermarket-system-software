@@ -70,32 +70,32 @@ export default function CustomersView() {
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards - Fully Contained Flex/Grid Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Active Shoppers</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">{totalMembers.toLocaleString()}</div>
-          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2]">
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Active Shoppers</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">{totalMembers.toLocaleString()}</div>
+          <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#c1fbd4] text-black border border-[#a8f5c2] truncate w-fit">
             +14 new this week
           </span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">VIP Tier Members</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">84 Diamond</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Top 6% spenders</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">VIP Tier Members</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">84 Diamond</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Top 6% spenders</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Avg Member LTV</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">{formatNaira(642000)}</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Lifetime retail spend</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Avg Member LTV</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate" title={formatNaira(642000)}>{formatNaira(642000)}</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Lifetime retail spend</span>
         </div>
 
-        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block">Loyalty Points Issued</span>
-          <div className="text-2xl sm:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums">48,200 pts</div>
-          <span className="text-[11px] font-normal text-[#71717a] mt-2 block">Redeemable at till</span>
+        <div className="p-5 bg-white border border-[#e4e4e7] rounded-xl card-stack-shadow min-w-0 overflow-hidden flex flex-col justify-between">
+          <span className="text-xs font-mono uppercase tracking-wider text-[#71717a] block truncate">Loyalty Points Issued</span>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-medium text-black mt-2 tracking-tight tabular-nums truncate">48,200 pts</div>
+          <span className="text-[11px] font-normal text-[#71717a] mt-2 block truncate">Redeemable at till</span>
         </div>
       </div>
 

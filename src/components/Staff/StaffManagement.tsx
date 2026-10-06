@@ -266,7 +266,7 @@ export default function StaffManagement({
             return (
               <div
                 key={machine.id}
-                className={`p-3.5 rounded-xl border text-center font-mono text-xs flex flex-col justify-between transition-all ${
+                className={`p-3.5 rounded-xl border text-center font-mono text-xs flex flex-col justify-between transition-all min-w-0 overflow-hidden ${
                   isCurrent
                     ? "bg-[#c1fbd4]/30 border-2 border-black text-black"
                     : "bg-[#fbfbf5] border-[#e4e4e7] text-[#52525b] hover:bg-white card-stack-shadow"

@@ -63,10 +63,10 @@ export default function ProductCatalog({
       <div className="bg-white border border-[#e4e4e7] card-stack-shadow p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl display-thin text-black tracking-tight">
-            Household Product Master Registry ({products.length} Items)
+            Household Product Catalog ({products.length} Items)
           </h1>
           <p className="text-sm font-normal text-[#52525b] mt-1">
-            Registered inventory codes, EAN-13 barcodes, and retail prices in Nigerian Naira (₦)
+            Inventory codes, EAN-13 barcodes, and retail prices in Nigerian Naira (₦)
           </p>
         </div>
 
@@ -110,12 +110,12 @@ export default function ProductCatalog({
         })}
       </div>
 
-      {/* Product Grid - Level 3 Stacked Micro-Shadows */}
+      {/* Product Grid - Level 3 Stacked Micro-Shadows with Strict Containment */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white border border-[#e4e4e7] hover:border-black rounded-xl p-4 flex flex-col justify-between transition-all card-stack-shadow"
+            className="bg-white border border-[#e4e4e7] hover:border-black rounded-xl p-4 flex flex-col justify-between transition-all card-stack-shadow min-w-0 overflow-hidden"
           >
             <div>
               <div className="flex items-center justify-between text-[10px] font-mono text-[#71717a] mb-1.5">
@@ -136,15 +136,15 @@ export default function ProductCatalog({
               )}
 
               {/* Barcode Strip */}
-              <div className="mt-3 p-2 bg-[#fbfbf5] rounded-lg border border-[#e4e4e7] flex items-center justify-between font-mono text-[11px]">
-                <div className="flex items-center gap-1.5 text-[#52525b]">
-                  <Barcode className="w-3.5 h-3.5 text-[#a1a1aa]" />
-                  <span>{product.barcode}</span>
+              <div className="mt-3 p-2 bg-[#fbfbf5] rounded-lg border border-[#e4e4e7] flex items-center justify-between font-mono text-[11px] min-w-0">
+                <div className="flex items-center gap-1.5 text-[#52525b] min-w-0 truncate">
+                  <Barcode className="w-3.5 h-3.5 text-[#a1a1aa] shrink-0" />
+                  <span className="truncate">{product.barcode}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleCopyBarcode(product.barcode)}
-                  className="text-[10px] text-[#52525b] hover:text-black px-2 py-0.5 rounded-full hover:bg-white border border-transparent hover:border-[#e4e4e7] cursor-pointer font-medium"
+                  className="text-[10px] text-[#52525b] hover:text-black px-2 py-0.5 rounded-full hover:bg-white border border-transparent hover:border-[#e4e4e7] cursor-pointer font-medium shrink-0 ml-1"
                 >
                   {copiedBarcode === product.barcode ? (
                     <span className="text-black flex items-center gap-0.5 font-bold">
@@ -157,11 +157,11 @@ export default function ProductCatalog({
               </div>
             </div>
 
-            {/* Price & Add to Register */}
-            <div className="pt-3 mt-3 border-t border-[#e4e4e7] flex items-center justify-between font-mono">
-              <div>
+            {/* Price & Add to Cart */}
+            <div className="pt-3 mt-3 border-t border-[#e4e4e7] flex items-center justify-between font-mono gap-2 min-w-0">
+              <div className="min-w-0">
                 <span className="text-[10px] text-[#71717a] block uppercase font-medium">Price</span>
-                <span className="text-sm font-bold text-black">
+                <span className="text-sm font-bold text-black truncate block">
                   {formatNaira(product.price)}
                 </span>
               </div>
@@ -170,10 +170,10 @@ export default function ProductCatalog({
                 <button
                   type="button"
                   onClick={() => handleAdd(product)}
-                  className="btn-primary-pill px-3.5 py-1.5 text-xs font-medium flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1 bg-[#c1fbd4] hover:bg-[#aaf5c2] text-black border border-[#a8f2c2] rounded-full text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   <Plus className="w-3 h-3" />
-                  <span>To Register</span>
+                  <span>Add to Cart</span>
                 </button>
               )}
             </div>
